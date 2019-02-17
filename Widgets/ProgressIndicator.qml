@@ -11,9 +11,11 @@ Item {
 
     property color color: colors.theme
 
+    property bool isMasked: true
+
     MouseArea {
         anchors.fill: parent
-        preventStealing: true
+        preventStealing: isMasked
         visible: root.visible
     }
 

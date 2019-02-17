@@ -60,5 +60,11 @@ Page {
                 initUrl: sceneUrl
             }
         }
+
+        Widgets.ProgressIndicator {
+            anchors.fill: parent
+            isMasked: false
+            visible: (sceneView.drawStatus === Enums.DrawStatusInProgress)
+        }
     }
 }
