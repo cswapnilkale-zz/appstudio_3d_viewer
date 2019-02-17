@@ -15,8 +15,8 @@ Item {
 
     MouseArea {
         anchors.fill: parent
-        preventStealing: isMasked
-        visible: root.visible
+        preventStealing: true
+        visible: isMasked && root.visible
     }
 
     BusyIndicator {
