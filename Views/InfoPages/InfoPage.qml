@@ -59,6 +59,10 @@ Page {
             Scene {
                 initUrl: sceneUrl
             }
+
+            Component.onCompleted: {
+                setViewpointCameraAndWait(camera);
+            }
         }
 
         Widgets.ProgressIndicator {
@@ -66,5 +70,13 @@ Page {
             isMasked: false
             visible: (sceneView.drawStatus === Enums.DrawStatusInProgress)
         }
+    }
+
+    Camera {
+        id: camera
+
+        heading: 10.0
+        pitch: 80.0
+        roll: 0.0
     }
 }
