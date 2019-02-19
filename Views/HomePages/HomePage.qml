@@ -120,7 +120,7 @@ Page {
     }
 
     function populateList() {
-        var q = "scene " + constants.q_filter;
+        var q = "web scene " + constants.q_filter;
         var num = constants.loadingNumber;
         var sortField = "";
         var sortOrder = "desc";
