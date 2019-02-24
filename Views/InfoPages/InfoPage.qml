@@ -17,11 +17,11 @@ Page {
 
     property string sceneUrl: ""
 
-    signal back()
+    signal closed()
 
     header: ToolBar {
         height: 56 * constants.scaleFactor
-        Material.primary: colors.theme
+        Material.primary: colors.view_background
         Material.elevation: 0
 
         RowLayout {
@@ -33,10 +33,10 @@ Page {
                 Layout.fillHeight: true
 
                 Widgets.ImageButton {
-                    imageIcon: images.navigate_back_icon
+                    imageIcon: images.close_icon
 
                     onClicked: {
-                        back();
+                        closed();
                     }
                 }
             }
@@ -45,6 +45,19 @@ Page {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }
+
+            Item {
+                Layout.preferredWidth: 56 * constants.scaleFactor
+                Layout.fillHeight: true
+
+                Widgets.ImageButton {
+                    imageIcon: images.more_option_icon
+
+                    onClicked: {
+
+                    }
+                }
+            }
         }
     }
 
@@ -52,9 +65,10 @@ Page {
         anchors.fill: parent
 
         SceneView {
-            id:sceneView
+            id: sceneView
 
             anchors.fill: parent
+            attributionTextVisible: false
 
             Scene {
                 initUrl: sceneUrl
@@ -62,6 +76,60 @@ Page {
 
             Component.onCompleted: {
                 setViewpointCameraAndWait(camera);
+            }
+        }
+
+        ColumnLayout {
+            anchors.fill: parent
+            spacing: 0
+
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 40 * constants.scaleFactor
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 40 * constants.scaleFactor
+
+                RowLayout {
+                    anchors.fill: parent
+                    spacing: 0
+
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
+
+                    Item {
+                        Layout.preferredWidth: 16 * constants.scaleFactor
+                        Layout.fillHeight: true
+                    }
+
+                    Widgets.RoundedButton {
+                        Layout.preferredWidth: 40 * constants.scaleFactor
+                        Layout.fillHeight: true
+
+                        color: colors.view_background
+
+                        source: images.home_icon
+                        iconColor: colors.white
+
+                        onClicked: {
+                            sceneNavigateBackHome();
+                        }
+                    }
+
+                    Item {
+                        Layout.preferredWidth: 16 * constants.scaleFactor
+                        Layout.fillHeight: true
+                    }
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
             }
         }
 
@@ -78,5 +146,9 @@ Page {
         heading: 10.0
         pitch: 80.0
         roll: 0.0
+    }
+
+    function sceneNavigateBackHome() {
+        sceneView.setViewpointCamera(camera);
     }
 }

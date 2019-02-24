@@ -9,7 +9,7 @@ import ArcGIS.AppFramework.Controls 1.0
 Item {
     id: root
 
-    property color color: colors.theme
+    property color color: colors.white
 
     property bool isMasked: true
 

@@ -10,7 +10,7 @@ Item {
     property real maximumScreenWidth: app.width > 1000 * constants.scaleFactor ? 800 * constants.scaleFactor : 568 * constants.scaleFactor
 
     property bool isiPhoneX: false
-    property bool isUsingDefaultFont: true
+    property bool isUsingDefaultFont: false
     property bool isiOS: false
     property bool ismacOS: false
     property bool isAutoSignIn: false

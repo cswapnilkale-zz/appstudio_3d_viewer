@@ -51,5 +51,9 @@ App {
         anchors.fill: parent
         initialItem: components.landingPageComponent
     }
+
+    Component.onCompleted: {
+        appManager.initialize();
+    }
 }
 

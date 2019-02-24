@@ -23,7 +23,7 @@ Project {
     Files {
         directory: "."
         recursive: true
-        filter: "*.json;*.html;*.txt;*.conf"
+        filter: "*.json;*.html;*.txt;*.conf;*.ttf"
     }
 
     importPaths: [

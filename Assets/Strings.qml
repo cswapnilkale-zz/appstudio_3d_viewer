@@ -3,5 +3,7 @@ import QtQuick 2.9
 Item {
     id: root
 
-    readonly property string start: qsTr("START")
+    readonly property string app_title: qsTr("AppStudio 3D")
+    readonly property string start_button: qsTr("GET STARTED")
+    readonly property string web_scenes: qsTr("Web scenes")
 }

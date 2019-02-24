@@ -23,7 +23,7 @@ Page {
 
     header: ToolBar {
         height: 56 * constants.scaleFactor
-        Material.primary: colors.theme
+        Material.primary: colors.view_background
         Material.elevation: 0
 
         RowLayout {
@@ -31,21 +31,25 @@ Page {
             spacing: 0
 
             Item {
-                Layout.preferredWidth: 56 * constants.scaleFactor
-                Layout.fillHeight: true
-
-                Widgets.ImageButton {
-                    imageIcon: images.navigate_back_icon
-
-                    onClicked: {
-                        back();
-                    }
-                }
-            }
-
-            Item {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+
+                Label {
+                    anchors.fill: parent
+
+                    text: strings.web_scenes
+                    color: colors.white
+                    font.family: fonts.avenirNextBold
+                    font.pixelSize: 20 * constants.scaleFactor
+                    elide: Text.ElideRight
+                    clip: true
+
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+
+                    leftPadding: 16 * constants.scaleFactor
+                    rightPadding: 16 * constants.scaleFactor
+                }
             }
         }
     }
@@ -56,7 +60,7 @@ Page {
 
         Item {
             Layout.fillWidth: true
-            Layout.preferredHeight: 8 * constants.scaleFactor
+            Layout.preferredHeight: 16 * constants.scaleFactor
         }
 
         Item {
@@ -67,12 +71,17 @@ Page {
                 id: listView
 
                 anchors.fill: parent
-                spacing: 1 * constants.scaleFactor
+                spacing: 16 * constants.scaleFactor
                 clip: true
                 model: ListModel {}
 
                 delegate: SceneDelegate {
                     id: delegate
+
+                    width: Math.min(parent.width, appManager.maximumScreenWidth) - 32 * constants.scaleFactor
+                    height: 104 * constants.scaleFactor
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    color: colors.black
 
                     onClicked: {
                         var infoPage = infoPageComponent.createObject(
@@ -80,7 +89,7 @@ Page {
                                     {
                                         sceneUrl: constants.orgUrl + "/home/item.html?id=" + itemId
                                     });
-                        infoPage.onBack.connect(function() {
+                        infoPage.onClosed.connect(function() {
                             stackView.pop();
                         })
                         stackView.push(infoPage);

@@ -11,55 +11,76 @@ import "../../Widgets" as Widgets
 Widgets.TouchGestureArea {
     id: root
 
-    width: Math.min(parent.width, appManager.maximumScreenWidth)
-    height: 72 * constants.scaleFactor
-    anchors.horizontalCenter: parent.horizontalCenter
-    color: colors.white
-
-    RowLayout {
+    ColumnLayout {
         anchors.fill: parent
         spacing: 0
 
         Item {
-            Layout.preferredWidth: 16 * constants.scaleFactor
-            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.preferredHeight: 16 * constants.scaleFactor
         }
 
         Item {
-            Layout.preferredWidth: 40 * constants.scaleFactor
+            Layout.fillWidth: true
             Layout.fillHeight: true
 
-            Widgets.IconImage {
-                width: 40 * constants.scaleFactor
-                height: this.width
-                source: itemThumbnail
-                anchors.centerIn: parent
+            RowLayout {
+                anchors.fill: parent
+                spacing: 0
+
+                Item {
+                    Layout.preferredWidth: 16 * constants.scaleFactor
+                    Layout.fillHeight: true
+                }
+
+                Item {
+                    Layout.preferredWidth: 108 * constants.scaleFactor
+                    Layout.fillHeight: true
+
+                    Widgets.IconImage {
+                        anchors.fill: parent
+                        source: itemThumbnail
+                    }
+                }
+
+                Item {
+                    Layout.preferredWidth: 16 * constants.scaleFactor
+                    Layout.fillHeight: true
+                }
+
+                Label {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    text: itemTitle
+                    elide: Label.ElideRight
+                    clip: true
+
+                    font.family: fonts.avenirNextBold
+                    font.pixelSize: 14 * constants.scaleFactor
+                    color: colors.white
+
+                    horizontalAlignment: Label.AlignLeft
+                    verticalAlignment: Label.AlignVCenter
+                }
+
+                Item {
+                    Layout.preferredWidth: 56 * constants.scaleFactor
+                    Layout.fillHeight: true
+
+                    Widgets.IconImage {
+                        width: 24 * constants.scaleFactor
+                        height: this.width
+                        source: images.right_arrow_icon
+                        anchors.centerIn: parent
+                    }
+                }
             }
         }
 
         Item {
-            Layout.preferredWidth: 16 * constants.scaleFactor
-            Layout.fillHeight: true
-        }
-
-        Label {
             Layout.fillWidth: true
-            Layout.fillHeight: true
-
-            text: itemTitle
-            elide: Label.ElideRight
-            clip: true
-
-            font.pixelSize: 16 * constants.scaleFactor
-            color: colors.black
-
-            horizontalAlignment: Label.AlignLeft
-            verticalAlignment: Label.AlignVCenter
-        }
-
-        Item {
-            Layout.preferredWidth: 16 * constants.scaleFactor
-            Layout.fillHeight: true
+            Layout.preferredHeight: 16 * constants.scaleFactor
         }
     }
 }

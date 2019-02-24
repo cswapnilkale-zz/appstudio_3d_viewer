@@ -5,6 +5,8 @@ import ArcGIS.AppFramework 1.0
 Item {
     id: root
 
+    property string avenirNextBold: system
+
     property string system: Qt.font({ pixelSize: 16 }).family
 
     FileFolder {
@@ -24,7 +26,9 @@ Item {
             onStatusChanged: {
                 if (status === FontLoader.Ready) {
                     switch (name) {
-
+                    case "Avenir Next":
+                        avenirNextBold = name;
+                        break;
                     }
                 }
 
