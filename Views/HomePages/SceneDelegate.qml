@@ -54,6 +54,8 @@ Widgets.TouchGestureArea {
 
                     text: itemTitle
                     elide: Label.ElideRight
+                    wrapMode: Label.Wrap
+                    maximumLineCount: 2
                     clip: true
 
                     font.family: fonts.avenirNextBold
