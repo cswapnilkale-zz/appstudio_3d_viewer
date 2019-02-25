@@ -11,8 +11,8 @@ import "Controls" as Controls
 App {
     id: app
 
-    width: 400
-    height: 640
+    width: 421
+    height: 725
 
     Material.background: colors.view_background
 
