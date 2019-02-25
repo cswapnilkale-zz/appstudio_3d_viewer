@@ -14,24 +14,7 @@ import "../../Widgets" as Widgets
 Page {
     id: landingPage
 
-    Material.background: colors.view_background
-
-    Item {
-        anchors.fill: parent
-
-        SceneView {
-            id: sceneView
-
-            anchors.fill: parent
-            attributionTextVisible: false
-
-            Scene {
-                BasemapImagery {}
-
-                Surface {}
-            }
-        }
-    }
+    Material.background: colors.black
 
     ColumnLayout {
         anchors.fill: parent
@@ -70,6 +53,16 @@ Page {
         Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
+
+            Image {
+                height: parent.height / 5 * 4
+
+                fillMode: Image.PreserveAspectFit
+
+                anchors.centerIn: parent
+
+                source: images.earth_icon
+            }
         }
 
         Item {
