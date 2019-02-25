@@ -3,6 +3,7 @@ import QtQuick 2.9
 import "../Views/HomePages" as HomePages
 import "../Views/LandingPages" as LandingPages
 import "../Views/InfoPages" as InfoPages
+import "../Widgets" as Widgets
 
 Item {
     id: root
@@ -10,6 +11,7 @@ Item {
     property alias landingPageComponent: landingPageComponent
     property alias homePageComponent: homePageComponent
     property alias infoPageComponent: infoPageComponent
+    property alias menuItemComponent: menuItemComponent
 
     // Pages
     Component {
@@ -28,5 +30,11 @@ Item {
         id: infoPageComponent
 
         InfoPages.InfoPage {}
+    }
+
+    Component {
+        id: menuItemComponent
+
+        Widgets.MenuItem {}
     }
 }

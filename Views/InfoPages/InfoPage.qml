@@ -54,7 +54,7 @@ Page {
                     imageIcon: images.more_option_icon
 
                     onClicked: {
-
+                        optionMenu.open();
                     }
                 }
             }
@@ -72,10 +72,6 @@ Page {
 
             Scene {
                 initUrl: sceneUrl
-            }
-
-            Component.onCompleted: {
-                setViewpointCameraAndWait(camera);
             }
         }
 
@@ -140,15 +136,34 @@ Page {
         }
     }
 
-    Camera {
-        id: camera
+    MouseArea {
+        anchors.fill: parent
+        preventStealing: true
+        visible: optionMenu.visible
+    }
 
-        heading: 10.0
-        pitch: 80.0
-        roll: 0.0
+    Widgets.OptionMenu {
+        id: optionMenu
+
+        x: appManager.isRTL ? 8 * constants.scaleFactor : parent.width - this.width - 8 * constants.scaleFactor
+        y: - 40 * constants.scaleFactor
+    }
+
+    Component.onCompleted: {
+        populateUI();
+    }
+
+    function populateUI() {
+        var openUrlItem = components.menuItemComponent.createObject(null, { text: strings.open_url });
+
+        openUrlItem.onTriggered.connect(function() {
+            Qt.openUrlExternally(sceneUrl);
+        });
+
+        optionMenu.addItem(openUrlItem);
     }
 
     function sceneNavigateBackHome() {
-        sceneView.setViewpointCamera(camera);
+        sceneView.setViewpointCamera(sceneView.scene.initialViewpoint.camera);
     }
 }
