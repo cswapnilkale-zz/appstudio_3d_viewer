@@ -112,7 +112,51 @@ Page {
                         iconColor: colors.white
 
                         onClicked: {
-                            sceneNavigateBackHome();
+                            navigateCamera(sceneView.scene.initialViewpoint.camera);
+                        }
+                    }
+
+                    Item {
+                        Layout.preferredWidth: 16 * constants.scaleFactor
+                        Layout.fillHeight: true
+                    }
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 16 * constants.scaleFactor
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 40 * constants.scaleFactor
+
+                RowLayout {
+                    anchors.fill: parent
+                    spacing: 0
+
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
+
+                    Item {
+                        Layout.preferredWidth: 16 * constants.scaleFactor
+                        Layout.fillHeight: true
+                    }
+
+                    Widgets.RoundedButton {
+                        Layout.preferredWidth: 40 * constants.scaleFactor
+                        Layout.fillHeight: true
+
+                        color: colors.view_background
+
+                        source: images.book_marks_icon
+                        iconColor: colors.white
+
+                        onClicked: {
+                            bookMarkSlideMenu.open();
                         }
                     }
 
@@ -133,6 +177,17 @@ Page {
             anchors.fill: parent
             isMasked: false
             visible: (sceneView.drawStatus === Enums.DrawStatusInProgress)
+        }
+    }
+
+    BookMarkSlideMenu{
+        id: bookMarkSlideMenu
+
+        width: 0.78 * parent.width
+        height: parent.height
+
+        onClicked: {
+            navigateCamera(bookmarkViewpoint.camera);
         }
     }
 
@@ -161,9 +216,22 @@ Page {
         });
 
         optionMenu.addItem(openUrlItem);
+
+        var bookmarks = sceneView.scene.bookmarks;
+
+        for (var i = 0; i < bookmarks.count; i++) {
+            var bookmark = bookmarks.get(i);
+
+            var obj = {
+                bookmarkName: bookmark.name,
+                bookmarkViewpoint: bookmark.viewpoint
+            }
+
+            bookMarkSlideMenu.listView.model.append(obj);
+        }
     }
 
-    function sceneNavigateBackHome() {
-        sceneView.setViewpointCamera(sceneView.scene.initialViewpoint.camera);
+    function navigateCamera(camera) {
+        sceneView.setViewpointCamera(camera);
     }
 }
