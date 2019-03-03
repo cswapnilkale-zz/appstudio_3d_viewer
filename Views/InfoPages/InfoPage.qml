@@ -112,7 +112,8 @@ Page {
                         iconColor: colors.white
 
                         onClicked: {
-                            navigateCamera(sceneView.scene.initialViewpoint.camera);
+                            if (sceneView.scene.initialViewpoint.camera)
+                                navigateCamera(sceneView.scene.initialViewpoint.camera);
                         }
                     }
 
