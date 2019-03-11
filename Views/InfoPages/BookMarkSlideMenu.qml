@@ -121,8 +121,8 @@ Drawer {
                             }
 
                             Label {
-                                width: parent.width
-                                height: parent.height
+                                Layout.fillWidth: true
+                                Layout.fillHeight: true
 
                                 text: bookmarkName
                                 clip: true

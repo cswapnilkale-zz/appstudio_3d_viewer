@@ -1,5 +1,7 @@
 import QtQuick 2.9
 
+import Esri.ArcGISRuntime 100.5
+
 import "../Views/HomePages" as HomePages
 import "../Views/LandingPages" as LandingPages
 import "../Views/InfoPages" as InfoPages
@@ -12,6 +14,7 @@ Item {
     property alias homePageComponent: homePageComponent
     property alias infoPageComponent: infoPageComponent
     property alias menuItemComponent: menuItemComponent
+    property alias cameraComponent: cameraComponent
 
     // Pages
     Component {
@@ -36,5 +39,13 @@ Item {
         id: menuItemComponent
 
         Widgets.MenuItem {}
+    }
+
+    Component {
+        id: cameraComponent
+
+        Camera {
+
+        }
     }
 }

@@ -16,8 +16,8 @@ App {
 
     Material.background: colors.view_background
 
-    LayoutMirroring.enabled: appManager.isRightToLeft
-    LayoutMirroring.childrenInherit: appManager.isRightToLeft
+    LayoutMirroring.enabled: appManager.isRTL
+    LayoutMirroring.childrenInherit: appManager.isRTL
 
     // Reference
     property alias colors: colors

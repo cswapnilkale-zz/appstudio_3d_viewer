@@ -112,8 +112,9 @@ Page {
                         iconColor: colors.white
 
                         onClicked: {
-                            if (sceneView.scene.initialViewpoint.camera)
-                                navigateCamera(sceneView.scene.initialViewpoint.camera);
+                            adjustCameraAngle();
+                            //                            if (sceneView.scene.initialViewpoint.camera)
+                            //                                navigateCamera(sceneView.scene.initialViewpoint.camera);
                         }
                     }
 
@@ -234,5 +235,17 @@ Page {
 
     function navigateCamera(camera) {
         sceneView.setViewpointCamera(camera);
+    }
+
+    function adjustCameraAngle() {
+        var referenceCamera = sceneView.currentViewpointCamera;
+
+        var camera = components.cameraComponent.createObject(parent);
+        camera.heading = referenceCamera.heading;
+        camera.pitch = referenceCamera.pitch + 20;
+        camera.roll = referenceCamera.roll;
+        camera.location = referenceCamera.location;
+
+        navigateCamera(camera);
     }
 }
