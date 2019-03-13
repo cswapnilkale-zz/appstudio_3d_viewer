@@ -67,7 +67,7 @@ Drawer {
                         clip: true
                         elide: Text.ElideRight
 
-                        font.family: fonts.avenirNextBold
+                        font.family: fonts.avenirNextDemi
                         font.pixelSize: 16 * constants.scaleFactor
                         color: colors.white
 
@@ -128,7 +128,7 @@ Drawer {
                                 clip: true
                                 elide: Text.ElideRight
 
-                                font.family: fonts.avenirNextBold
+                                font.family: fonts.avenirNextDemi
                                 font.pixelSize: 16 * constants.scaleFactor
                                 color: colors.white
 
@@ -155,7 +155,7 @@ Drawer {
                     clip: true
                     elide: Text.ElideRight
 
-                    font.family: fonts.avenirNextBold
+                    font.family: fonts.avenirNextDemi
                     font.pixelSize: 16 * constants.scaleFactor
                     color: colors.white
 

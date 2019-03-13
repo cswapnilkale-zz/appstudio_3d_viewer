@@ -37,7 +37,7 @@ Page {
 
                 text: strings.app_title
                 color: colors.white
-                font.family: fonts.avenirNextBold
+                font.family: fonts.avenirNextDemi
                 font.pixelSize: 38 * constants.scaleFactor
                 elide: Text.ElideRight
                 clip: true
@@ -78,7 +78,7 @@ Page {
 
                 anchors.centerIn: parent
 
-                fontFamily: fonts.system
+                fontFamily: fonts.avenirNextDemi
 
                 textSize: 14 * constants.scaleFactor
 

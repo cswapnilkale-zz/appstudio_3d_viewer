@@ -58,7 +58,7 @@ Widgets.TouchGestureArea {
                     maximumLineCount: 2
                     clip: true
 
-                    font.family: fonts.avenirNextBold
+                    font.family: fonts.avenirNextDemi
                     font.pixelSize: 14 * constants.scaleFactor
                     color: colors.white
 

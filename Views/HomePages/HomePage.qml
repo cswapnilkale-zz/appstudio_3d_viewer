@@ -39,7 +39,7 @@ Page {
 
                     text: strings.web_scenes
                     color: colors.white
-                    font.family: fonts.avenirNextBold
+                    font.family: fonts.avenirNextDemi
                     font.pixelSize: 20 * constants.scaleFactor
                     elide: Text.ElideRight
                     clip: true

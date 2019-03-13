@@ -13,10 +13,12 @@ TouchGestureArea {
     property alias iconColor: icon.color
     property alias iconRotation: icon.rotation
 
+    property real iconSize: 24 * constants.scaleFactor
+
     IconImage {
         id: icon
 
-        width: 24 * constants.scaleFactor
+        width: iconSize
         height: this.width
         anchors.centerIn: parent
     }

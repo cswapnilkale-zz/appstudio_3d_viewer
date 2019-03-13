@@ -173,10 +173,10 @@ Page {
                         Layout.preferredWidth: 40 * constants.scaleFactor
                         Layout.fillHeight: true
 
-                        color: colors.white
+                        color: colors.view_background
 
                         source: images.home_icon
-                        iconColor: colors.view_background
+                        iconColor: colors.white
 
                         onClicked: {
                             if (typeof initialViewpointCamera !== "undefined")
@@ -218,10 +218,10 @@ Page {
                         Layout.preferredWidth: 40 * constants.scaleFactor
                         Layout.fillHeight: true
 
-                        color: locationManager.active ? colors.blue : colors.white
+                        color: locationManager.active ? colors.blue : colors.view_background
 
                         source: images.location_icon
-                        iconColor: locationManager.active ? colors.white : colors.view_background
+                        iconColor: locationManager.active ? colors.white : colors.white
 
                         onClicked: {
                             isLocationEnabled = !isLocationEnabled;
@@ -267,13 +267,11 @@ Page {
                         Layout.preferredWidth: 40 * constants.scaleFactor
                         Layout.fillHeight: true
 
-                        color: isHeadingNorth ? colors.blue : colors.white
+                        color: colors.view_background
 
                         source: images.compass_icon
-                        iconColor: isHeadingNorth ? colors.white : colors.view_background
                         iconRotation: sceneView.currentViewpointCamera.heading
-
-                        property bool isHeadingNorth: 360 % sceneView.currentViewpointCamera.heading < 0.1
+                        iconSize: 32 * constants.scaleFactor
 
                         onClicked: {
                             rotateToNorth();

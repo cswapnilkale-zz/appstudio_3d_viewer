@@ -26,8 +26,12 @@ Item {
             onStatusChanged: {
                 if (status === FontLoader.Ready) {
                     switch (name) {
-                    case "Avenir Next":
-                        avenirNextBold = name;
+                    case "Avenir Next W1G Demi":
+                        avenirNextDemi = name;
+                        break;
+
+                    case "Avenir Next W1G Regular":
+                        avenirNextRegular = name;
                         break;
                     }
                 }

@@ -12,7 +12,7 @@ MenuItem {
         text: root.text
 
         font {
-            family: fonts.avenirNextBold
+            family: fonts.avenirNextRegular
             pixelSize: 16 * constants.scaleFactor
         }
 
