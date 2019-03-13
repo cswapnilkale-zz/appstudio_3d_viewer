@@ -129,57 +129,57 @@ Page {
     }
 
     function populateList() {
-        var q = "web scene " + constants.q_filter;
-        var num = constants.loadingNumber;
-        var sortField = "";
-        var sortOrder = "desc";
+        var _q = "web scene " + constants.q_filter;
+        var _num = constants.loadingNumber;
+        var _sortField = "";
+        var _sortOrder = "desc";
 
-        var promise = new Promise(function(resolve, reject) {
-            networkManager.requestWebScenes(q, num, nextStart, sortField, sortOrder, function(response) {
+        var _promise = new Promise(function(resolve, reject) {
+            networkManager.requestWebScenes(_q, _num, nextStart, _sortField, _sortOrder, function(response) {
                 try {
                     if (!homePage)
                         return;
 
-                    var results = [];
-                    var nextStart = 1;
+                    var _results = [];
+                    var _nextStart = 1;
 
                     if (response.hasOwnProperty("total"))
                         total = response.total;
 
                     if (response.hasOwnProperty("results"))
-                        results = response.results;
+                        _results = response.results;
 
                     if (response.hasOwnProperty("nextStart"))
-                        nextStart = response.nextStart;
+                        _nextStart = response.nextStart;
 
-                    for (var i in results) {
-                        var temp = results[i];
+                    for (var i in _results) {
+                        var _temp = _results[i];
 
-                        var itemId = "";
-                        var itemOwner = "";
-                        var itemTitle = "";
-                        var itemThumbnail = "";
+                        var _itemId = "";
+                        var _itemOwner = "";
+                        var _itemTitle = "";
+                        var _itemThumbnail = "";
 
-                        if (temp.hasOwnProperty("id"))
-                            itemId = temp.id;
+                        if (_temp.hasOwnProperty("id"))
+                            _itemId = _temp.id;
 
-                        if (temp.hasOwnProperty("owner"))
-                            itemOwner = temp.owner;
+                        if (_temp.hasOwnProperty("owner"))
+                            _itemOwner = _temp.owner;
 
-                        if (temp.hasOwnProperty("title"))
-                            itemTitle = temp.title;
+                        if (_temp.hasOwnProperty("title"))
+                            _itemTitle = _temp.title;
 
-                        if (temp.hasOwnProperty("thumbnail"))
-                            itemThumbnail = networkManager.rootUrl + "/content/items/" + itemId + "/info/" + temp.thumbnail;
+                        if (_temp.hasOwnProperty("thumbnail"))
+                            _itemThumbnail = networkManager.rootUrl + "/content/items/" + _itemId + "/info/" + _temp.thumbnail;
 
-                        var obj = {
-                            itemId: itemId,
-                            itemOwner: itemOwner,
-                            itemTitle: itemTitle,
-                            itemThumbnail: itemThumbnail
+                        var _obj = {
+                            itemId: _itemId,
+                            itemOwner: _itemOwner,
+                            itemTitle: _itemTitle,
+                            itemThumbnail: _itemThumbnail
                         }
 
-                        listView.model.append(obj);
+                        listView.model.append(_obj);
                     }
 
                     resolve();
@@ -189,7 +189,7 @@ Page {
             })
         })
 
-        promise.then(function() {
+        _promise.then(function() {
             isPageLoading = false;
             isNextPageLoading = false;
         }).catch(function(e) {

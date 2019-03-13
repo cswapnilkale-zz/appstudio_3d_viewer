@@ -11,6 +11,7 @@ TouchGestureArea {
 
     property alias source: icon.source
     property alias iconColor: icon.color
+    property alias iconRotation: icon.rotation
 
     IconImage {
         id: icon

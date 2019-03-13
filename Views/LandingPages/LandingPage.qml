@@ -85,13 +85,13 @@ Page {
                 buttonText: strings.start_button
 
                 onClicked: {
-                    var homePage = components.homePageComponent.createObject(null);
+                    var _homePage = components.homePageComponent.createObject(null);
 
-                    homePage.onBack.connect(function() {
+                    _homePage.onBack.connect(function() {
                         stackView.pop();
                     });
 
-                    stackView.push(homePage);
+                    stackView.push(_homePage);
                 }
             }
         }

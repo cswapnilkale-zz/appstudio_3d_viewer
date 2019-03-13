@@ -27,6 +27,7 @@ App {
     property alias images: images
     property alias components: components
     property alias appManager: appManager
+    property alias locationManager: locationManager
 
     // Assets
     Assets.Colors { id: colors }
@@ -46,6 +47,10 @@ App {
         id: networkManager
 
         rootUrl: constants.orgUrl + "/sharing/rest"
+    }
+
+    Controls.LocationManager {
+        id: locationManager
     }
 
     StackView {

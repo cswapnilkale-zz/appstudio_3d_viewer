@@ -13,7 +13,7 @@ import "../../Widgets" as Widgets
 Drawer {
     id: root
 
-    edge: appManager.isRTL ? Qt.RightEdge : Qt.LeftEdge
+    edge: appManager.isRTL ? Qt.LeftEdge : Qt.RightEdge
 
     interactive: this.visible
 

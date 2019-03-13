@@ -17,7 +17,35 @@ Page {
 
     property string sceneUrl: ""
 
+    property bool isLocationEnabled: false
+
+    property var initialViewpointCamera
+
     signal closed()
+
+    Connections {
+        target: locationManager
+
+        onPositionChanged: {
+            var _coordinateString = "%1 %2".arg(locationManager.coordinate.latitude).arg(locationManager.coordinate.longitude);
+
+            var _point = CoordinateFormatter.fromLatitudeLongitude(_coordinateString, SpatialReference.createWgs84());
+
+            var _location = {
+                x: _point.x,
+                y: _point.y,
+                z: locationManager.coordinate.altitude
+            }
+
+            var _rotation = {
+                heading: sceneView.currentViewpointCamera.heading,
+                pitch: 0,
+                roll: sceneView.currentViewpointCamera.roll
+            }
+
+            manipulateCamera(_rotation, _location);
+        }
+    }
 
     header: ToolBar {
         height: 56 * constants.scaleFactor
@@ -32,8 +60,15 @@ Page {
                 Layout.preferredWidth: 56 * constants.scaleFactor
                 Layout.fillHeight: true
 
-                Widgets.ImageButton {
-                    imageIcon: images.close_icon
+                Widgets.RoundedButton {
+                    width: 40 * constants.scaleFactor
+                    height: this.width
+                    anchors.centerIn: parent
+
+                    color: colors.view_background
+
+                    source: images.close_icon
+                    iconColor: colors.white
 
                     onClicked: {
                         closed();
@@ -47,11 +82,38 @@ Page {
             }
 
             Item {
+                Layout.preferredWidth: 40 * constants.scaleFactor
+                Layout.fillHeight: true
+
+                Widgets.RoundedButton {
+                    width: 40 * constants.scaleFactor
+                    height: this.width
+                    anchors.centerIn: parent
+
+                    color: colors.view_background
+
+                    source: images.book_marks_icon
+                    iconColor: colors.white
+
+                    onClicked: {
+                        bookMarkSlideMenu.open();
+                    }
+                }
+            }
+
+            Item {
                 Layout.preferredWidth: 56 * constants.scaleFactor
                 Layout.fillHeight: true
 
-                Widgets.ImageButton {
-                    imageIcon: images.more_option_icon
+                Widgets.RoundedButton {
+                    width: 40 * constants.scaleFactor
+                    height: this.width
+                    anchors.centerIn: parent
+
+                    color: colors.view_background
+
+                    source: images.more_option_icon
+                    iconColor: colors.white
 
                     onClicked: {
                         optionMenu.open();
@@ -72,6 +134,11 @@ Page {
 
             Scene {
                 initUrl: sceneUrl
+
+                onLoadStatusChanged: {
+                    if (loadStatus === 0)
+                        initialViewpointCamera = sceneView.scene.initialViewpoint.camera;
+                }
             }
         }
 
@@ -106,15 +173,14 @@ Page {
                         Layout.preferredWidth: 40 * constants.scaleFactor
                         Layout.fillHeight: true
 
-                        color: colors.view_background
+                        color: colors.white
 
                         source: images.home_icon
-                        iconColor: colors.white
+                        iconColor: colors.view_background
 
                         onClicked: {
-                            adjustCameraAngle();
-                            //                            if (sceneView.scene.initialViewpoint.camera)
-                            //                                navigateCamera(sceneView.scene.initialViewpoint.camera);
+                            if (typeof initialViewpointCamera !== "undefined")
+                                navigateCamera(initialViewpointCamera);
                         }
                     }
 
@@ -152,13 +218,65 @@ Page {
                         Layout.preferredWidth: 40 * constants.scaleFactor
                         Layout.fillHeight: true
 
-                        color: colors.view_background
+                        color: locationManager.active ? colors.blue : colors.white
 
-                        source: images.book_marks_icon
-                        iconColor: colors.white
+                        source: images.location_icon
+                        iconColor: locationManager.active ? colors.white : colors.view_background
 
                         onClicked: {
-                            bookMarkSlideMenu.open();
+                            isLocationEnabled = !isLocationEnabled;
+
+                            if (isLocationEnabled)
+                                locationManager.start();
+                            else
+                                locationManager.stop();
+                        }
+                    }
+
+                    Item {
+                        Layout.preferredWidth: 16 * constants.scaleFactor
+                        Layout.fillHeight: true
+                    }
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 16 * constants.scaleFactor
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 40 * constants.scaleFactor
+
+                RowLayout {
+                    anchors.fill: parent
+                    spacing: 0
+
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
+
+                    Item {
+                        Layout.preferredWidth: 16 * constants.scaleFactor
+                        Layout.fillHeight: true
+                    }
+
+                    Widgets.RoundedButton {
+                        Layout.preferredWidth: 40 * constants.scaleFactor
+                        Layout.fillHeight: true
+
+                        color: isHeadingNorth ? colors.blue : colors.white
+
+                        source: images.compass_icon
+                        iconColor: isHeadingNorth ? colors.white : colors.view_background
+                        iconRotation: sceneView.currentViewpointCamera.heading
+
+                        property bool isHeadingNorth: 360 % sceneView.currentViewpointCamera.heading < 0.1
+
+                        onClicked: {
+                            rotateToNorth();
                         }
                     }
 
@@ -211,25 +329,25 @@ Page {
     }
 
     function populateUI() {
-        var openUrlItem = components.menuItemComponent.createObject(null, { text: strings.open_url });
+        var _openUrlMenuItem = components.menuItemComponent.createObject(null, { text: strings.open_url });
 
-        openUrlItem.onTriggered.connect(function() {
+        _openUrlMenuItem.onTriggered.connect(function() {
             Qt.openUrlExternally(sceneUrl);
         });
 
-        optionMenu.addItem(openUrlItem);
+        optionMenu.addItem(_openUrlMenuItem);
 
-        var bookmarks = sceneView.scene.bookmarks;
+        var _bookmarks = sceneView.scene.bookmarks;
 
-        for (var i = 0; i < bookmarks.count; i++) {
-            var bookmark = bookmarks.get(i);
+        for (var i = 0; i < _bookmarks.count; i++) {
+            var _bookmark = _bookmarks.get(i);
 
-            var obj = {
-                bookmarkName: bookmark.name,
-                bookmarkViewpoint: bookmark.viewpoint
+            var _obj = {
+                bookmarkName: _bookmark.name,
+                bookmarkViewpoint: _bookmark.viewpoint
             }
 
-            bookMarkSlideMenu.listView.model.append(obj);
+            bookMarkSlideMenu.listView.model.append(_obj);
         }
     }
 
@@ -237,14 +355,36 @@ Page {
         sceneView.setViewpointCamera(camera);
     }
 
-    function adjustCameraAngle() {
-        var referenceCamera = sceneView.currentViewpointCamera;
+    function manipulateCamera(rotation, location) {
+        var _location = ArcGISRuntimeEnvironment.createObject(
+                    "Point", {
+                        x: location.x,
+                        y: location.y,
+                        z: location.z,
+                        SpatialReference: SpatialReference.createWgs84()
+                    })
 
-        var camera = components.cameraComponent.createObject(parent);
-        camera.heading = referenceCamera.heading;
-        camera.pitch = referenceCamera.pitch + 20;
-        camera.roll = referenceCamera.roll;
-        camera.location = referenceCamera.location;
+        var _camera = ArcGISRuntimeEnvironment.createObject(
+                    "Camera", {
+                        heading: rotation.heading,
+                        pitch: rotation.pitch,
+                        roll: rotation.roll,
+                        location: _location
+                    });
+
+        navigateCamera(_camera);
+    }
+
+    function rotateToNorth() {
+        var _deltaHeading = sceneView.currentViewpointCamera.heading;
+
+        _deltaHeading = _deltaHeading - 360;
+
+        var camera = sceneView.currentViewpointCamera.rotateAround(
+                    sceneView.currentViewpointCenter.center,
+                    _deltaHeading,
+                    0,
+                    0);
 
         navigateCamera(camera);
     }

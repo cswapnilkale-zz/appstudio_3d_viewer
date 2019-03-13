@@ -7,7 +7,7 @@ import ArcGIS.AppFramework.Controls 1.0
 Rectangle {
     id: root
 
-    property color shadowColor: colors.black
+    property color shadowColor: colors.white
 
     property bool isPressed: this.state === "Pressed"
     property bool isEnabled: true
