@@ -90,6 +90,8 @@ Page {
                                         sceneUrl: constants.orgUrl + "/home/item.html?id=" + itemId
                                     });
                         infoPage.onClosed.connect(function() {
+                            locationManager.stop();
+
                             stackView.pop();
                         })
                         stackView.push(infoPage);
