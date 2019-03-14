@@ -16,6 +16,8 @@ Page {
     Material.background: colors.view_background
 
     property string sceneUrl: ""
+    property string sceneTitle: ""
+    property string viewMode: sceneView.currentViewpointCamera.pitch < 0.1 ? "3D" : "2D"
 
     property bool isLocationEnabled: false
 
@@ -47,82 +49,6 @@ Page {
         }
     }
 
-    header: ToolBar {
-        height: 56 * constants.scaleFactor
-        Material.primary: colors.view_background
-        Material.elevation: 0
-
-        RowLayout {
-            anchors.fill: parent
-            spacing: 0
-
-            Item {
-                Layout.preferredWidth: 56 * constants.scaleFactor
-                Layout.fillHeight: true
-
-                Widgets.RoundedButton {
-                    width: 40 * constants.scaleFactor
-                    height: this.width
-                    anchors.centerIn: parent
-
-                    color: colors.view_background
-
-                    source: images.close_icon
-                    iconColor: colors.white
-
-                    onClicked: {
-                        closed();
-                    }
-                }
-            }
-
-            Item {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
-
-            Item {
-                Layout.preferredWidth: 40 * constants.scaleFactor
-                Layout.fillHeight: true
-
-                Widgets.RoundedButton {
-                    width: 40 * constants.scaleFactor
-                    height: this.width
-                    anchors.centerIn: parent
-
-                    color: colors.view_background
-
-                    source: images.book_marks_icon
-                    iconColor: colors.white
-
-                    onClicked: {
-                        bookMarkSlideMenu.open();
-                    }
-                }
-            }
-
-            Item {
-                Layout.preferredWidth: 56 * constants.scaleFactor
-                Layout.fillHeight: true
-
-                Widgets.RoundedButton {
-                    width: 40 * constants.scaleFactor
-                    height: this.width
-                    anchors.centerIn: parent
-
-                    color: colors.view_background
-
-                    source: images.more_option_icon
-                    iconColor: colors.white
-
-                    onClicked: {
-                        optionMenu.open();
-                    }
-                }
-            }
-        }
-    }
-
     Item {
         anchors.fill: parent
 
@@ -131,15 +57,6 @@ Page {
 
             anchors.fill: parent
             attributionTextVisible: false
-
-            Scene {
-                initUrl: sceneUrl
-
-                onLoadStatusChanged: {
-                    if (loadStatus === 0)
-                        initialViewpointCamera = sceneView.scene.initialViewpoint.camera;
-                }
-            }
         }
 
         ColumnLayout {
@@ -148,7 +65,7 @@ Page {
 
             Item {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 40 * constants.scaleFactor
+                Layout.fillHeight: true
             }
 
             Item {
@@ -158,56 +75,6 @@ Page {
                 RowLayout {
                     anchors.fill: parent
                     spacing: 0
-
-                    Item {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                    }
-
-                    Item {
-                        Layout.preferredWidth: 16 * constants.scaleFactor
-                        Layout.fillHeight: true
-                    }
-
-                    Widgets.RoundedButton {
-                        Layout.preferredWidth: 40 * constants.scaleFactor
-                        Layout.fillHeight: true
-
-                        color: colors.view_background
-
-                        source: images.home_icon
-                        iconColor: colors.white
-
-                        onClicked: {
-                            if (typeof initialViewpointCamera !== "undefined")
-                                navigateCamera(initialViewpointCamera);
-                        }
-                    }
-
-                    Item {
-                        Layout.preferredWidth: 16 * constants.scaleFactor
-                        Layout.fillHeight: true
-                    }
-                }
-            }
-
-            Item {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 16 * constants.scaleFactor
-            }
-
-            Item {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 40 * constants.scaleFactor
-
-                RowLayout {
-                    anchors.fill: parent
-                    spacing: 0
-
-                    Item {
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                    }
 
                     Item {
                         Layout.preferredWidth: 16 * constants.scaleFactor
@@ -237,6 +104,11 @@ Page {
                         Layout.preferredWidth: 16 * constants.scaleFactor
                         Layout.fillHeight: true
                     }
+
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
                 }
             }
 
@@ -254,9 +126,106 @@ Page {
                     spacing: 0
 
                     Item {
+                        Layout.preferredWidth: 16 * constants.scaleFactor
+                        Layout.fillHeight: true
+                    }
+
+                    Widgets.RoundedButton {
+                        Layout.preferredWidth: 40 * constants.scaleFactor
+                        Layout.fillHeight: true
+
+                        color: colors.view_background
+
+                        source: images.home_icon
+                        iconColor: colors.white
+
+                        onClicked: {
+                            if (typeof initialViewpointCamera !== "undefined")
+                                setCamera(initialViewpointCamera);
+                        }
+                    }
+
+                    Item {
+                        Layout.preferredWidth: 16 * constants.scaleFactor
+                        Layout.fillHeight: true
+                    }
+
+                    Item {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                     }
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 16 * constants.scaleFactor
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 40 * constants.scaleFactor
+
+                RowLayout {
+                    anchors.fill: parent
+                    spacing: 0
+
+                    Item {
+                        Layout.preferredWidth: 16 * constants.scaleFactor
+                        Layout.fillHeight: true
+                    }
+
+                    Widgets.TouchGestureArea {
+                        Layout.preferredWidth: 40 * constants.scaleFactor
+                        Layout.fillHeight: true
+                        color: colors.view_background
+                        radius: this.width / 2
+
+                        Label {
+                            id: icon
+
+                            anchors.centerIn: parent
+
+                            height: 24 * constants.scaleFactor
+
+                            text: viewMode === "2D" ? "2D" : "3D"
+                            clip: true
+                            elide: Text.ElideRight
+
+                            font.family: fonts.avenirNextDemi
+                            font.pixelSize: 14 * constants.scaleFactor
+                            color: colors.white
+                        }
+
+                        onClicked: {
+                            switchViewMode();
+                        }
+                    }
+
+                    Item {
+                        Layout.preferredWidth: 16 * constants.scaleFactor
+                        Layout.fillHeight: true
+                    }
+
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 16 * constants.scaleFactor
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 40 * constants.scaleFactor
+
+                RowLayout {
+                    anchors.fill: parent
+                    spacing: 0
 
                     Item {
                         Layout.preferredWidth: 16 * constants.scaleFactor
@@ -282,12 +251,17 @@ Page {
                         Layout.preferredWidth: 16 * constants.scaleFactor
                         Layout.fillHeight: true
                     }
+
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
                 }
             }
 
             Item {
                 Layout.fillWidth: true
-                Layout.fillHeight: true
+                Layout.preferredHeight: 40 * constants.scaleFactor
             }
         }
 
@@ -298,6 +272,121 @@ Page {
         }
     }
 
+    Rectangle {
+        width: parent.width
+        height: 56 * constants.scaleFactor
+        color: colors.transparent
+
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        RowLayout {
+            anchors.fill: parent
+            spacing: 0
+
+            Item {
+                Layout.preferredWidth: 8 * constants.scaleFactor
+                Layout.fillHeight: true
+            }
+
+            Item {
+                Layout.preferredWidth: 40 * constants.scaleFactor
+                Layout.fillHeight: true
+
+                Widgets.RoundedButton {
+                    width: 40 * constants.scaleFactor
+                    height: this.width
+                    anchors.centerIn: parent
+
+                    color: colors.transparent
+
+                    source: images.close_icon
+                    iconColor: colors.white
+
+                    onClicked: {
+                        closed();
+                    }
+                }
+            }
+
+            Item {
+                Layout.preferredWidth: 8 * constants.scaleFactor
+                Layout.fillHeight: true
+            }
+
+            Label {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                text: sceneTitle
+                clip: true
+                elide: Text.ElideRight
+
+                font.family: fonts.avenirNextDemi
+                font.pixelSize: 20 * constants.scaleFactor
+                color: colors.white
+
+                horizontalAlignment: Label.AlignLeft
+                verticalAlignment: Label.AlignVCenter
+            }
+
+            Item {
+                Layout.preferredWidth: 8 * constants.scaleFactor
+                Layout.fillHeight: true
+            }
+
+            Item {
+                Layout.preferredWidth: 40 * constants.scaleFactor
+                Layout.fillHeight: true
+
+                Widgets.RoundedButton {
+                    width: 40 * constants.scaleFactor
+                    height: this.width
+                    anchors.centerIn: parent
+
+                    color: colors.transparent
+
+                    source: images.book_marks_icon
+                    iconColor: colors.white
+
+                    onClicked: {
+                        bookMarkSlideMenu.open();
+                    }
+                }
+            }
+
+            Item {
+                Layout.preferredWidth: 8 * constants.scaleFactor
+                Layout.fillHeight: true
+            }
+
+            Item {
+                Layout.preferredWidth: 40 * constants.scaleFactor
+                Layout.fillHeight: true
+
+                Widgets.RoundedButton {
+                    width: 40 * constants.scaleFactor
+                    height: this.width
+                    anchors.centerIn: parent
+
+                    color: colors.transparent
+
+                    source: images.more_option_icon
+                    iconColor: colors.white
+
+                    onClicked: {
+                        optionMenu.open();
+                    }
+                }
+            }
+
+            Item {
+                Layout.preferredWidth: 8 * constants.scaleFactor
+                Layout.fillHeight: true
+            }
+        }
+    }
+
     BookMarkSlideMenu{
         id: bookMarkSlideMenu
 
@@ -305,7 +394,7 @@ Page {
         height: parent.height
 
         onClicked: {
-            navigateCamera(bookmarkViewpoint.camera);
+            setCamera(bookmarkViewpoint.camera);
         }
     }
 
@@ -323,7 +412,22 @@ Page {
     }
 
     Component.onCompleted: {
+        createScene();
         populateUI();
+    }
+
+    function createScene() {
+        var _scene = ArcGISRuntimeEnvironment.createObject(
+                    "Scene", {
+                        initUrl: sceneUrl
+                    });
+
+        _scene.onLoadStatusChanged.connect(function() {
+            if (_scene.loadStatus === 0)
+                initialViewpointCamera = sceneView.scene.initialViewpoint.camera;
+        });
+
+        sceneView.scene = _scene;
     }
 
     function populateUI() {
@@ -349,7 +453,7 @@ Page {
         }
     }
 
-    function navigateCamera(camera) {
+    function setCamera(camera) {
         sceneView.setViewpointCamera(camera);
     }
 
@@ -370,20 +474,51 @@ Page {
                         location: _location
                     });
 
-        navigateCamera(_camera);
+        setCamera(_camera);
+    }
+
+    function cameraRotateAround(point, deltaRotation) {
+        var _camera = sceneView.currentViewpointCamera.rotateAround(
+                    point,
+                    deltaRotation.heading,
+                    deltaRotation.pitch,
+                    deltaRotation.roll);
+
+        setCamera(_camera);
     }
 
     function rotateToNorth() {
-        var _deltaHeading = sceneView.currentViewpointCamera.heading;
+        var _camera = sceneView.currentViewpointCamera;
+        var _point = sceneView.currentViewpointCenter.center;
 
-        _deltaHeading = _deltaHeading - 360;
+        var _deltaRotation = {
+            heading: _camera.heading,
+            pitch: 0,
+            roll: 0
+        }
 
-        var camera = sceneView.currentViewpointCamera.rotateAround(
-                    sceneView.currentViewpointCenter.center,
-                    _deltaHeading,
-                    0,
-                    0);
+        cameraRotateAround(_point, _deltaRotation);
+    }
 
-        navigateCamera(camera);
+    function switchViewMode() {
+        var _camera = sceneView.currentViewpointCamera;
+        var _point = sceneView.currentViewpointCenter.center;
+        var _deltaRotation = {};
+
+        if (viewMode === "2D") {
+            _deltaRotation = {
+                heading: 0,
+                pitch: -_camera.pitch,
+                roll: 0
+            }
+        } else {
+            _deltaRotation = {
+                heading: 0,
+                pitch: 45,
+                roll: 0
+            }
+        }
+
+        cameraRotateAround(_point, _deltaRotation);
     }
 }

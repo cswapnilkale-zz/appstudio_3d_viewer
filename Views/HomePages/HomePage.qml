@@ -87,6 +87,7 @@ Page {
                         var infoPage = infoPageComponent.createObject(
                                     null,
                                     {
+                                        sceneTitle: itemTitle,
                                         sceneUrl: constants.orgUrl + "/home/item.html?id=" + itemId
                                     });
                         infoPage.onClosed.connect(function() {
@@ -143,7 +144,6 @@ Page {
                         return;
 
                     var _results = [];
-                    var _nextStart = 1;
 
                     if (response.hasOwnProperty("total"))
                         total = response.total;
@@ -152,7 +152,7 @@ Page {
                         _results = response.results;
 
                     if (response.hasOwnProperty("nextStart"))
-                        _nextStart = response.nextStart;
+                        nextStart = response.nextStart;
 
                     for (var i in _results) {
                         var _temp = _results[i];
