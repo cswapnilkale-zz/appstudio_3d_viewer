@@ -264,21 +264,20 @@ Page {
                 Layout.preferredHeight: 40 * constants.scaleFactor
             }
         }
-
-        Widgets.ProgressIndicator {
-            anchors.fill: parent
-            isMasked: false
-            visible: (sceneView.drawStatus === Enums.DrawStatusInProgress)
-        }
     }
 
-    Rectangle {
+    Item {
         width: parent.width
         height: 56 * constants.scaleFactor
-        color: colors.transparent
 
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
+
+        Rectangle {
+            anchors.fill: parent
+            color: colors.black
+            opacity: 0.38
+        }
 
         RowLayout {
             anchors.fill: parent
@@ -383,6 +382,20 @@ Page {
             Item {
                 Layout.preferredWidth: 8 * constants.scaleFactor
                 Layout.fillHeight: true
+            }
+        }
+
+        Widgets.LinearGadientLoadingBar {
+            width: parent.width
+            height: 4 * constants.scaleFactor
+
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+
+            visible: sceneView.drawStatus === Enums.DrawStatusInProgress
+
+            Behavior on visible {
+                NumberAnimation { duration: constants.normalDuration }
             }
         }
     }

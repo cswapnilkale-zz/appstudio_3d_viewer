@@ -2,13 +2,16 @@
     "arcgisRuntime": 1005,
     "capabilities": {
         "audio": false,
+        "backgroundBluetoothCentral": false,
         "backgroundLocation": false,
+        "beacon": false,
         "biometricAuthentication": false,
         "bluetooth": false,
         "camera": false,
         "fileSharing": false,
         "highAccuracyLocation": false,
         "ios": {
+            "backgroundExternalAccessory": false,
             "externalAccessoryProtocolStrings": [
             ]
         },
@@ -21,16 +24,24 @@
     },
     "deployment": {
         "android": {
+            "packageName": ""
         },
         "arcgisRuntimeExtensionsLicense": "",
-        "arcgisRuntimeLicense": "",
+        "arcgisRuntimeLicense": "runtimelite,1000,rud6166262739,none,S080TK8EL9E5003AD113",
+        "clientId": "",
         "ios": {
+            "bundleId": "",
             "codeSignIdentity": ""
         },
         "macos": {
+            "bundleId": "",
             "codeSignIdentity": ""
         },
+        "publisherName": "",
+        "shortcutName": "",
         "uwp": {
+            "packageName": "",
+            "productID": ""
         },
         "winphone": {
             "packageDisplayName": ""
@@ -57,6 +68,9 @@
             "landscape": true,
             "portrait": true,
             "showStatusBar": true
+        },
+        "windows": {
+            "renderingEngine": "default"
         }
     },
     "environment": {
@@ -69,15 +83,15 @@
     "properties": {
     },
     "resources": {
-        "appIcon": "appicon.png",
-        "launchImageBackground": "launchimage-background.png",
-        "launchImageBackgroundColor": "#ffffff",
-        "launchImageOverlay": "launchimage-overlay.png"
+        "appIcon": "",
+        "launchImageBackground": "",
+        "launchImageBackgroundColor": "#000000",
+        "launchImageOverlay": ""
     },
     "type": "app",
-    "urlScheme": null,
+    "urlScheme": "",
     "version": {
         "major": 1,
-        "micro": 1
+        "micro": 4
     }
 }
