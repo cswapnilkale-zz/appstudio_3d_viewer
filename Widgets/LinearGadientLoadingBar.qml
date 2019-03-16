@@ -6,7 +6,7 @@ import QtGraphicalEffects 1.0
 Item {
     id: root
 
-    property real velocity: 1 * constants.scaleFactor
+    property real velocity: 30 * constants.scaleFactor
 
     onWidthChanged: {
         loader.sourceComponent = undefined;
@@ -70,7 +70,7 @@ Item {
             Timer {
                 id: timer
 
-                interval: 1
+                interval: 1000 / 30
                 running: true
                 repeat: true
 
@@ -82,11 +82,11 @@ Item {
                     leftPart.x += velocity;
                     rightPart.x += velocity;
 
-                    if (leftPart.x >= parent.width)
-                        leftPart.x = -parent.width;
+                    if (leftPart.x > parent.width)
+                        leftPart.x -= 2 * parent.width;
 
-                    if (rightPart.x >= parent.width)
-                        rightPart.x = -parent.width;
+                    if (rightPart.x > parent.width)
+                        rightPart.x -= 2 * parent.width;
                 }
             }
         }
