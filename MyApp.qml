@@ -49,6 +49,10 @@ App {
         rootUrl: constants.orgUrl + "/sharing/rest"
     }
 
+    Controls.ArcGISRuntimeHelper {
+        id: arcGISRuntimeHelper
+    }
+
     Controls.LocationManager {
         id: locationManager
     }

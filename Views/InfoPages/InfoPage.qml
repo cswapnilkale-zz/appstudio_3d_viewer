@@ -18,6 +18,7 @@ Page {
     property string sceneUrl: ""
     property string sceneTitle: ""
     property string viewMode: sceneView.currentViewpointCamera.pitch < 0.1 ? "3D" : "2D"
+    property string coordinate: ""
 
     property bool isLocationEnabled: false
 
@@ -57,6 +58,10 @@ Page {
 
             anchors.fill: parent
             attributionTextVisible: false
+
+            onViewpointChanged: {
+                updateSceneView();
+            }
         }
 
         ColumnLayout {
@@ -262,6 +267,58 @@ Page {
             Item {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 40 * constants.scaleFactor
+
+                ColumnLayout {
+                    anchors.fill: parent
+                    spacing: 0
+
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
+
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 24 * constants.scaleFactor
+
+                        RowLayout {
+                            anchors.fill: parent
+                            spacing: 0
+
+                            Item {
+                                Layout.fillWidth: true
+                                Layout.fillHeight: true
+                            }
+
+                            Rectangle {
+                                Layout.preferredWidth: coordinateLabel.width
+                                Layout.fillHeight: true
+                                color: colors.black
+
+                                Label {
+                                    id: coordinateLabel
+
+                                    width: this.implicitWidth
+                                    height: parent.height
+
+                                    text: coordinate
+                                    clip: true
+                                    elide: Text.ElideRight
+
+                                    font.family: fonts.avenirNextRegular
+                                    font.pixelSize: 14 * constants.scaleFactor
+                                    color: colors.white
+
+                                    horizontalAlignment: Label.AlignHCenter
+                                    verticalAlignment: Label.AlignVCenter
+
+                                    leftPadding: 16 * constants.scaleFactor
+                                    rightPadding: 16 * constants.scaleFactor
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -390,7 +447,7 @@ Page {
             height: 4 * constants.scaleFactor
 
             anchors.left: parent.left
-            anchors.bottom: parent.bottom
+            anchors.top: parent.top
 
             visible: sceneView.drawStatus === Enums.DrawStatusInProgress
 
@@ -533,5 +590,12 @@ Page {
         }
 
         cameraRotateAround(_point, _deltaRotation);
+    }
+
+    function updateSceneView() {
+        if (!sceneView.currentViewpointCenter.center)
+            return;
+
+        coordinate = arcGISRuntimeHelper.changePointToLatitudeLongitude(sceneView.currentViewpointCenter.center, Enums.LatitudeLongitudeFormatDegreesMinutesSeconds, 3);
     }
 }
