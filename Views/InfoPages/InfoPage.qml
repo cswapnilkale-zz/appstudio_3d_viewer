@@ -510,19 +510,6 @@ Page {
         });
 
         optionMenu.addItem(_openUrlMenuItem);
-
-        var _bookmarks = sceneView.scene.bookmarks;
-
-        for (var i = 0; i < _bookmarks.count; i++) {
-            var _bookmark = _bookmarks.get(i);
-
-            var _obj = {
-                bookmarkName: _bookmark.name,
-                bookmarkViewpoint: _bookmark.viewpoint
-            }
-
-            bookMarkSlideMenu.listView.model.append(_obj);
-        }
     }
 
     function setCamera(camera) {
