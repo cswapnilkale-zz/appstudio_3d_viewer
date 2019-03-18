@@ -7,6 +7,8 @@ import ArcGIS.AppFramework 1.0
 import ArcGIS.AppFramework.Controls 1.0
 
 TouchGestureArea {
+    id: root
+
     radius: this.width / 2
 
     property alias source: icon.source
@@ -21,5 +23,6 @@ TouchGestureArea {
         width: iconSize
         height: this.width
         anchors.centerIn: parent
+        opacity: root.isEnabled ? 1 : 0.38
     }
 }

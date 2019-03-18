@@ -10,6 +10,33 @@ Item {
 
     property string token: "";
 
+    Component {
+        id: networkRequestComponent
+
+        NetworkRequest {
+            property var callback
+            property var params
+
+            followRedirects: true
+            ignoreSslErrors: true
+            responseType: "json"
+            method: "POST"
+
+            onReadyStateChanged: {
+                if (readyState == NetworkRequest.DONE) {
+                    if (errorCode === 0)
+                        callback(response, params, errorCode);
+                    else
+                        callback(response, params, errorCode);
+                }
+            }
+
+            onError: {
+                callback({}, params, -1);
+            }
+        }
+    }
+
     function makeNetworkConnection(url, obj, callback, params) {
         var component = networkRequestComponent;
         var networkRequest = component.createObject(parent);
@@ -37,30 +64,23 @@ Item {
         makeNetworkConnection(url, obj, callback);
     }
 
-    Component {
-        id: networkRequestComponent
+    function requestShortenedUrl(longUrl, callback) {
+        var url = "https://arcg.is/prod/shorten?longUrl=" + longUrl;
 
-        NetworkRequest {
-            property var callback
-            property var params
+        makeXHRRequest(url, "GET", callback);
+    }
 
-            followRedirects: true
-            ignoreSslErrors: true
-            responseType: "json"
-            method: "POST"
+    function makeXHRRequest(networkRequestUrl, networkRequestMethod, callback) {
+        var xhr = new XMLHttpRequest();
+        var method = networkRequestMethod;
+        var url = networkRequestUrl;
 
-            onReadyStateChanged: {
-                if (readyState == NetworkRequest.DONE) {
-                    if (errorCode === 0)
-                        callback(response, params, errorCode);
-                    else
-                        callback(response, params, errorCode);
-                }
-            }
+        xhr.open(method, url, true);
+        xhr.send();
 
-            onError: {
-                callback({}, params, -1);
-            }
-        }
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === xhr.DONE && xhr.status === 200)
+                callback(xhr);
+        };
     }
 }

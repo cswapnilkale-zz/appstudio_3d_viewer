@@ -19,8 +19,10 @@ Page {
     property string sceneTitle: ""
     property string viewMode: sceneView.currentViewpointCamera.pitch < 0.1 ? "3D" : "2D"
     property string coordinate: ""
+    property string shortUrl: ""
 
     property bool isLocationEnabled: false
+    property bool isPageLoading: false
 
     property var initialViewpointCamera
 
@@ -93,7 +95,9 @@ Page {
                         color: locationManager.active ? colors.blue : colors.view_background
 
                         source: images.location_icon
-                        iconColor: locationManager.active ? colors.white : colors.white
+                        iconColor: colors.white
+
+                        isEnabled: locationManager.valid
 
                         onClicked: {
                             isLocationEnabled = !isLocationEnabled;
@@ -146,7 +150,7 @@ Page {
 
                         onClicked: {
                             if (typeof initialViewpointCamera !== "undefined")
-                                setCamera(initialViewpointCamera);
+                                arcGISRuntimeHelper.setCamera(sceneView, initialViewpointCamera);
                         }
                     }
 
@@ -432,8 +436,10 @@ Page {
                     source: images.more_option_icon
                     iconColor: colors.white
 
+                    isEnabled: shortUrl > ""
+
                     onClicked: {
-                        optionMenu.open();
+                        openShareSheet();
                     }
                 }
             }
@@ -466,26 +472,21 @@ Page {
         height: parent.height
 
         onClicked: {
-            setCamera(bookmarkViewpoint.camera);
+
         }
     }
 
-    MouseArea {
-        anchors.fill: parent
-        preventStealing: true
-        visible: optionMenu.visible
-    }
-
-    Widgets.OptionMenu {
-        id: optionMenu
-
-        x: appManager.isRTL ? 8 * constants.scaleFactor : parent.width - this.width - 8 * constants.scaleFactor
-        y: - 40 * constants.scaleFactor
-    }
-
     Component.onCompleted: {
+        initial();
+    }
+
+    function initial() {
+        isPageLoading = true;
+
         createScene();
-        populateUI();
+        getShortenedUrl(sceneUrl, function() {
+            isPageLoading = false;
+        });
     }
 
     function createScene() {
@@ -502,18 +503,36 @@ Page {
         sceneView.scene = _scene;
     }
 
-    function populateUI() {
-        var _openUrlMenuItem = components.menuItemComponent.createObject(null, { text: strings.open_url });
-
-        _openUrlMenuItem.onTriggered.connect(function() {
-            Qt.openUrlExternally(sceneUrl);
-        });
-
-        optionMenu.addItem(_openUrlMenuItem);
+    function openShareSheet() {
+        AppFramework.clipboard.share(AppFramework.urlInfo(shortUrl).url);
     }
 
-    function setCamera(camera) {
-        sceneView.setViewpointCamera(camera);
+    function getShortenedUrl(url, process) {
+        var promise = new Promise(function(resolve, reject) {
+            networkManager.requestShortenedUrl(url, function(response) {
+                try {
+                    if (!infoPage)
+                        return;
+
+                    var json = JSON.parse(response.responseText);
+
+                    if (json.hasOwnProperty("data"))
+                        shortUrl = json.data.url;
+                    else
+                        shortUrl = url;
+
+                    resolve();
+                } catch (e) {
+                    reject("Error in InfoPage requestShortenedUrl(): " + e);
+                }
+            })
+        })
+
+        promise.then(function() {
+            process();
+        }).catch(function(e) {
+            console.log(e);
+        })
     }
 
     function manipulateCamera(rotation, location) {
@@ -533,17 +552,7 @@ Page {
                         location: _location
                     });
 
-        setCamera(_camera);
-    }
-
-    function cameraRotateAround(point, deltaRotation) {
-        var _camera = sceneView.currentViewpointCamera.rotateAround(
-                    point,
-                    deltaRotation.heading,
-                    deltaRotation.pitch,
-                    deltaRotation.roll);
-
-        setCamera(_camera);
+        arcGISRuntimeHelper.setCamera(sceneView, _camera);
     }
 
     function rotateToNorth() {
@@ -556,7 +565,7 @@ Page {
             roll: 0
         }
 
-        cameraRotateAround(_point, _deltaRotation);
+        arcGISRuntimeHelper.cameraRotateAround(sceneView, _point, _deltaRotation);
     }
 
     function switchViewMode() {
@@ -578,7 +587,7 @@ Page {
             }
         }
 
-        cameraRotateAround(_point, _deltaRotation);
+        arcGISRuntimeHelper.cameraRotateAround(sceneView, _point, _deltaRotation);
     }
 
     function updateSceneView() {

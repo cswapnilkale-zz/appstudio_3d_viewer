@@ -128,10 +128,13 @@ Page {
     function initialize() {
         isPageLoading = true;
 
-        populateList();
+        populateList(function() {
+            isPageLoading = false;
+            isNextPageLoading = false;
+        });
     }
 
-    function populateList() {
+    function populateList(process) {
         var _q = "web scene " + constants.q_filter;
         var _num = constants.loadingNumber;
         var _sortField = "";
@@ -192,8 +195,7 @@ Page {
         })
 
         _promise.then(function() {
-            isPageLoading = false;
-            isNextPageLoading = false;
+            process();
         }).catch(function(e) {
             console.error(e);
         })
