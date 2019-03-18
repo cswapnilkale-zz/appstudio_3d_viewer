@@ -77,9 +77,9 @@
     },
     "launchUrlSchemes": [
     ],
-    "mainFile": "MyApp.qml",
+    "mainFile": "3DViewer.qml",
     "multipleInstances": true,
-    "projectFile": "MyApp.qmlproject",
+    "projectFile": "3DViewer.qmlproject",
     "properties": {
     },
     "resources": {
