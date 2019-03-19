@@ -5,6 +5,7 @@ import Esri.ArcGISRuntime 100.5
 import "../Views/HomePages" as HomePages
 import "../Views/LandingPages" as LandingPages
 import "../Views/InfoPages" as InfoPages
+import "../Views/SettingsPages" as SettingsPages
 import "../Widgets" as Widgets
 
 Item {
@@ -15,6 +16,7 @@ Item {
     property alias infoPageComponent: infoPageComponent
     property alias menuItemComponent: menuItemComponent
     property alias cameraComponent: cameraComponent
+    property alias settingsPageComponent: settingsPageComponent
 
     // Pages
     Component {
@@ -35,6 +37,13 @@ Item {
         InfoPages.InfoPage {}
     }
 
+    Component {
+        id: settingsPageComponent
+
+        SettingsPages.SettingsPage {}
+    }
+
+    // Components
     Component {
         id: menuItemComponent
 

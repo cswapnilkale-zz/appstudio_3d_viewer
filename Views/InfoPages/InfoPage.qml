@@ -18,7 +18,7 @@ Page {
     property string sceneUrl: ""
     property string sceneTitle: ""
     property string viewMode: sceneView.currentViewpointCamera.pitch < 0.1 ? "3D" : "2D"
-    property string coordinate: ""
+    property string coordinates: ""
     property string shortUrl: ""
 
     property bool isLocationDisplayed: false
@@ -300,10 +300,16 @@ Page {
                                 Layout.fillHeight: true
                             }
 
-                            Rectangle {
+                            Widgets.TouchGestureArea {
                                 Layout.preferredWidth: coordinateLabel.width
                                 Layout.fillHeight: true
                                 color: colors.black
+
+                                isEnabled: coordinates > ""
+
+                                onClicked: {
+                                    copy(coordinates);
+                                }
 
                                 Label {
                                     id: coordinateLabel
@@ -311,7 +317,7 @@ Page {
                                     width: this.implicitWidth
                                     height: parent.height
 
-                                    text: coordinate
+                                    text: coordinates
                                     clip: true
                                     elide: Text.ElideRight
 
@@ -520,10 +526,10 @@ Page {
                     if (!infoPage)
                         return;
 
-                    var json = JSON.parse(response.responseText);
+                    var _json = JSON.parse(response.responseText);
 
-                    if (json.hasOwnProperty("data"))
-                        shortUrl = json.data.url;
+                    if (_json.hasOwnProperty("data"))
+                        shortUrl = _json.data.url;
                     else
                         shortUrl = url;
 
@@ -563,15 +569,14 @@ Page {
 
     function rotateToNorth() {
         var _camera = sceneView.currentViewpointCamera;
-        var _point = sceneView.currentViewpointCenter.center;
 
-        var _deltaRotation = {
-            heading: _camera.heading,
-            pitch: 0,
-            roll: 0
+        var _rotation = {
+            heading: 0,
+            pitch: _camera.pitch,
+            roll: _camera.roll
         }
 
-        arcGISRuntimeHelper.cameraRotateAround(sceneView, _point, _deltaRotation);
+        arcGISRuntimeHelper.cameraRotateTo(sceneView, _rotation);
     }
 
     function switchViewMode() {
@@ -597,10 +602,15 @@ Page {
     }
 
     function updateSceneView() {
-        if (!sceneView.currentViewpointCenter.center)
+        if (!sceneView.currentViewpointCenter)
             return;
 
-        coordinate = arcGISRuntimeHelper.changePointToLatitudeLongitude(sceneView.currentViewpointCenter.center, Enums.LatitudeLongitudeFormatDegreesMinutesSeconds, 3);
+        coordinates = arcGISRuntimeHelper.changePointToLatitudeLongitude(sceneView.currentViewpointCenter.center, Enums.LatitudeLongitudeFormatDegreesMinutesSeconds, 3, "DMS");
+    }
+
+    function copy(text) {
+        if (AppFramework.clipboard.copy(text))
+            toastMessage.show(strings.clipboard_copy);
     }
 
     function displayDialog() {

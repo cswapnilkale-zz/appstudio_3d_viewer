@@ -5,8 +5,32 @@ import Esri.ArcGISRuntime 100.5
 Item {
     id: root
 
-    function changePointToLatitudeLongitude(point, format, decimalPlaces) {
-        return CoordinateFormatter.toLatitudeLongitude(point, format, decimalPlaces);
+    function changePointToLatitudeLongitude(point, format, decimalPlaces, type) {
+        return formatCoordinates(CoordinateFormatter.toLatitudeLongitude(point, format, decimalPlaces), type);
+    }
+
+    function formatCoordinates(text, type) {
+        var _array = text.split(" ");
+
+        switch (type) {
+        case "DMS":
+            text = "%1° %2' %3  %4° %5' %6".arg(_array[0]).arg(_array[1]).arg(_array[2]).arg(_array[3]).arg(_array[4]).arg(_array[5]);
+            break;
+
+        default:
+            console.error("Error in ArcGISRuntimeHelper formatCoordinates type %1 is not supported.".arg(type));
+            break;
+        }
+
+        var _directions = ["N", "S", "E", "W"]
+
+        for (var i = 0; i < _directions.length; i++) {
+            var _direction = _directions[i];
+
+            text = text.replace(_direction, " %1".arg(_direction));
+        }
+
+        return text;
     }
 
     function setCamera(sceneView, camera) {
@@ -19,6 +43,16 @@ Item {
                     deltaRotation.heading,
                     deltaRotation.pitch,
                     deltaRotation.roll);
+
+        setCamera(sceneView, _camera);
+    }
+
+    function cameraRotateTo(sceneView, rotation) {
+        var _camera = sceneView.currentViewpointCamera.rotateTo(
+                    rotation.heading,
+                    rotation.pitch,
+                    rotation.roll
+                    );
 
         setCamera(sceneView, _camera);
     }

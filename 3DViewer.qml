@@ -66,6 +66,10 @@ App {
         initialItem: components.landingPageComponent
     }
 
+    Widgets.ToastMessage {
+        id: toastMessage
+    }
+
     Widgets.Dialog {
         id: dialog
     }

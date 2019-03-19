@@ -23,7 +23,7 @@ Page {
 
     header: ToolBar {
         height: 56 * constants.scaleFactor
-        Material.primary: colors.view_background
+        Material.primary: colors.black
         Material.elevation: 0
 
         RowLayout {
@@ -44,12 +44,46 @@ Page {
                     elide: Text.ElideRight
                     clip: true
 
-                    horizontalAlignment: Text.AlignHCenter
+                    horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
 
                     leftPadding: 16 * constants.scaleFactor
                     rightPadding: 16 * constants.scaleFactor
                 }
+            }
+
+            Item {
+                Layout.preferredWidth: 8 * constants.scaleFactor
+                Layout.fillHeight: true
+            }
+
+            Item {
+                Layout.preferredWidth: 40 * constants.scaleFactor
+                Layout.fillHeight: true
+
+                Widgets.RoundedButton {
+                    width: 40 * constants.scaleFactor
+                    height: this.width
+                    anchors.centerIn: parent
+
+                    color: colors.transparent
+
+                    source: images.settings_icon
+                    iconColor: colors.white
+
+                    isEnabled: false
+
+                    onClicked: {
+                        var settingsPage = components.settingsPageComponent.createObject(null);
+
+                        stackView.push(settingsPage);
+                    }
+                }
+            }
+
+            Item {
+                Layout.preferredWidth: 8 * constants.scaleFactor
+                Layout.fillHeight: true
             }
         }
     }
@@ -128,14 +162,11 @@ Page {
     function initialize() {
         isPageLoading = true;
 
-        populateList(function() {
-            isPageLoading = false;
-            isNextPageLoading = false;
-        });
+        populateList();
     }
 
-    function populateList(process) {
-        var _q = "web scene " + constants.q_filter;
+    function populateList() {
+        var _q = "type:web scene " + constants.q_filter;
         var _num = constants.loadingNumber;
         var _sortField = "";
         var _sortOrder = "desc";
@@ -195,7 +226,8 @@ Page {
         })
 
         _promise.then(function() {
-            process();
+            isPageLoading = false;
+            isNextPageLoading = false;
         }).catch(function(e) {
             console.error(e);
         })
