@@ -27,4 +27,8 @@ Item {
         if (!isUsingDefaultFont)
             fonts.loadFonts();
     }
+
+    function hasLocationPermission() {
+        return AppFramework.checkCapability(AppFramework.Location);
+    }
 }

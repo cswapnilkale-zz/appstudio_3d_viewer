@@ -86,7 +86,7 @@
         "appIcon": "",
         "launchImageBackground": "",
         "launchImageBackgroundColor": "#000000",
-        "launchImageOverlay": ""
+        "launchImageOverlay": "transparentoverlay.png"
     },
     "type": "app",
     "urlScheme": "",

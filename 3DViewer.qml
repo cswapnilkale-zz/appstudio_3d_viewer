@@ -7,6 +7,7 @@ import ArcGIS.AppFramework.Controls 1.0
 
 import "Assets" as Assets
 import "Controls" as Controls
+import "Widgets" as Widgets
 
 App {
     id: app
@@ -28,6 +29,7 @@ App {
     property alias components: components
     property alias appManager: appManager
     property alias locationManager: locationManager
+    property alias dialog: dialog
 
     // Assets
     Assets.Colors { id: colors }
@@ -62,6 +64,10 @@ App {
 
         anchors.fill: parent
         initialItem: components.landingPageComponent
+    }
+
+    Widgets.Dialog {
+        id: dialog
     }
 
     Component.onCompleted: {

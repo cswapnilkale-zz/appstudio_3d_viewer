@@ -21,7 +21,7 @@ Page {
     property string coordinate: ""
     property string shortUrl: ""
 
-    property bool isLocationEnabled: false
+    property bool isLocationDisplayed: false
     property bool isPageLoading: false
 
     property var initialViewpointCamera
@@ -92,7 +92,7 @@ Page {
                         Layout.preferredWidth: 40 * constants.scaleFactor
                         Layout.fillHeight: true
 
-                        color: locationManager.active ? colors.blue : colors.view_background
+                        color: isLocationDisplayed ? colors.blue : colors.view_background
 
                         source: images.location_icon
                         iconColor: colors.white
@@ -100,12 +100,18 @@ Page {
                         isEnabled: locationManager.valid
 
                         onClicked: {
-                            isLocationEnabled = !isLocationEnabled;
-
-                            if (isLocationEnabled)
+                            if (!isLocationDisplayed) {
                                 locationManager.start();
-                            else
+
+                                if (!appManager.hasLocationPermission())
+                                    displayDialog();
+                                else
+                                    isLocationDisplayed = true;
+                            } else {
                                 locationManager.stop();
+
+                                isLocationDisplayed = false;
+                            }
                         }
                     }
 
@@ -595,5 +601,18 @@ Page {
             return;
 
         coordinate = arcGISRuntimeHelper.changePointToLatitudeLongitude(sceneView.currentViewpointCenter.center, Enums.LatitudeLongitudeFormatDegreesMinutesSeconds, 3);
+    }
+
+    function displayDialog() {
+        dialog.display(strings.dialog_no_location_permission_title,
+                       strings.dialog_no_location_permission_description,
+                       strings.okay,
+                       "",
+                       colors.white,
+                       colors.white,
+                       function() {
+                           dialog.close();
+                       },
+                       function() {});
     }
 }
