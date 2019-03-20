@@ -18,7 +18,8 @@ Page {
     property string sceneUrl: ""
     property string sceneTitle: ""
     property string viewMode: sceneView.currentViewpointCamera.pitch < 0.1 ? "3D" : "2D"
-    property string coordinates: ""
+    property string sceneInfoText: ""
+    property string coordinatesText: ""
     property string shortUrl: ""
 
     property bool isLocationDisplayed: false
@@ -289,7 +290,12 @@ Page {
 
                     Item {
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 24 * constants.scaleFactor
+                        Layout.preferredHeight: this.visible ? 16 * constants.scaleFactor : 0
+                        visible: sceneInfoText > ""
+
+                        Behavior on Layout.preferredHeight {
+                            NumberAnimation { duration: constants.normalDuration }
+                        }
 
                         RowLayout {
                             anchors.fill: parent
@@ -300,15 +306,18 @@ Page {
                                 Layout.fillHeight: true
                             }
 
-                            Widgets.TouchGestureArea {
+                            Item {
                                 Layout.preferredWidth: coordinateLabel.width
                                 Layout.fillHeight: true
-                                color: colors.black
 
-                                isEnabled: coordinates > ""
+                                Widgets.TouchGestureArea {
+                                    anchors.fill: parent
+                                    color: colors.black
+                                    opacity: 0.38
 
-                                onClicked: {
-                                    copy(coordinates);
+                                    onClicked: {
+                                        copy(coordinatesText);
+                                    }
                                 }
 
                                 Label {
@@ -317,19 +326,19 @@ Page {
                                     width: this.implicitWidth
                                     height: parent.height
 
-                                    text: coordinates
+                                    text: sceneInfoText
                                     clip: true
                                     elide: Text.ElideRight
 
                                     font.family: fonts.avenirNextRegular
-                                    font.pixelSize: 14 * constants.scaleFactor
+                                    font.pixelSize: 12 * constants.scaleFactor
                                     color: colors.white
 
                                     horizontalAlignment: Label.AlignHCenter
                                     verticalAlignment: Label.AlignVCenter
 
-                                    leftPadding: 16 * constants.scaleFactor
-                                    rightPadding: 16 * constants.scaleFactor
+                                    leftPadding: 8 * constants.scaleFactor
+                                    rightPadding: 8 * constants.scaleFactor
                                 }
                             }
                         }
@@ -543,7 +552,7 @@ Page {
         promise.then(function() {
             process();
         }).catch(function(e) {
-            console.log(e);
+            console.error(e);
         })
     }
 
@@ -602,10 +611,24 @@ Page {
     }
 
     function updateSceneView() {
-        if (!sceneView.currentViewpointCenter)
+        if (!sceneView.currentViewpointCenter || !sceneView.currentViewpointCamera)
             return;
 
-        coordinates = arcGISRuntimeHelper.changePointToLatitudeLongitude(sceneView.currentViewpointCenter.center, Enums.LatitudeLongitudeFormatDegreesMinutesSeconds, 3, "DMS");
+        updateSceneInfo();
+    }
+
+    function updateSceneInfo() {
+        var _cameraLocation = GeometryEngine.project(sceneView.currentViewpointCamera.location, SpatialReference.createWebMercator());
+        var _distanceText = "";
+
+        if (_cameraLocation.z > 1000)
+            _distanceText = "%1 km".arg(arcGISRuntimeHelper.convertUnit(_cameraLocation.z, "km"));
+        else
+            _distanceText = "%1 m".arg(arcGISRuntimeHelper.convertUnit(_cameraLocation.z, "m"));
+
+        coordinatesText = arcGISRuntimeHelper.changePointToLatitudeLongitude(sceneView.currentViewpointCenter.center, Enums.LatitudeLongitudeFormatDegreesMinutesSeconds, 3, "DMS");
+
+        sceneInfoText = "Camera: %1  ".arg(_distanceText) + coordinatesText;
     }
 
     function copy(text) {

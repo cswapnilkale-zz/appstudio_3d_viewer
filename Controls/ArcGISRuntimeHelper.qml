@@ -56,4 +56,24 @@ Item {
 
         setCamera(sceneView, _camera);
     }
+
+    function calculateDistanceBetweenPoints(point1, point2, distanceUnit, angularUnit, geodeticCurveType) {
+        point1 = GeometryEngine.project(point1, SpatialReference.createWebMercator());
+        point2 = GeometryEngine.project(point2, SpatialReference.createWebMercator());
+
+        return GeometryEngine.distanceGeodetic(point1, point2, distanceUnit, angularUnit, geodeticCurveType);
+    }
+
+    function convertUnit(value, unit) {
+        var _value = value;
+
+        switch (unit) {
+        case "m":
+            return _value.toFixed(2);
+
+        case "km":
+            _value = _value / 1000;
+            return _value < 10000000 ? _value.toFixed(2) : _value.toExponential(3);
+        }
+    }
 }

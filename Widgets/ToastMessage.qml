@@ -23,7 +23,7 @@ Rectangle {
 
     visible: opacity > 0
 
-    Behavior on visible {
+    Behavior on opacity {
         enabled: root.state === "Hide"
 
         NumberAnimation { duration: animationDuration }
