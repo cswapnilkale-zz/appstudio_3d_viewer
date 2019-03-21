@@ -34,7 +34,7 @@ Item {
     }
 
     function setCamera(sceneView, camera) {
-        sceneView.setViewpointCamera(camera);
+        sceneView.setViewpointCameraAndSeconds(camera, constants.normalDuration / 100);
     }
 
     function cameraRotateAround(sceneView, point, deltaRotation) {

@@ -13,4 +13,5 @@ Item {
     readonly property url book_mark_icon: "Images/outline_bookmark_border_white_48dp"
     readonly property url location_icon: "Images/baseline_gps_fixed_white_48dp.png"
     readonly property url settings_icon: "Images/baseline_settings_white_48dp.png"
+    readonly property url rotation_icon: "Images/baseline_3d_rotation_white_48dp.png"
 }

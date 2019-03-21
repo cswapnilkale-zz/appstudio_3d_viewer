@@ -65,6 +65,10 @@ Page {
             onViewpointChanged: {
                 updateSceneView();
             }
+
+            onMousePressed: {
+                resetCameraController();
+            }
         }
 
         ColumnLayout {
@@ -101,6 +105,8 @@ Page {
                         isEnabled: locationManager.valid
 
                         onClicked: {
+                            resetCameraController();
+
                             if (!isLocationDisplayed) {
                                 locationManager.start();
 
@@ -156,6 +162,8 @@ Page {
                         iconColor: colors.white
 
                         onClicked: {
+                            resetCameraController();
+
                             if (typeof initialViewpointCamera !== "undefined")
                                 arcGISRuntimeHelper.setCamera(sceneView, initialViewpointCamera);
                         }
@@ -214,6 +222,8 @@ Page {
                         }
 
                         onClicked: {
+                            resetCameraController();
+
                             switchViewMode();
                         }
                     }
@@ -254,11 +264,60 @@ Page {
 
                         color: colors.view_background
 
+                        source: images.rotation_icon
+                        iconColor: colors.white
+
+                        isEnabled: viewMode === "2D"
+
+                        onClicked: {
+                            applyRotation();
+                        }
+                    }
+
+                    Item {
+                        Layout.preferredWidth: 16 * constants.scaleFactor
+                        Layout.fillHeight: true
+                    }
+
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 16 * constants.scaleFactor
+            }
+
+
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 40 * constants.scaleFactor
+
+                RowLayout {
+                    anchors.fill: parent
+                    spacing: 0
+
+                    Item {
+                        Layout.preferredWidth: 16 * constants.scaleFactor
+                        Layout.fillHeight: true
+                    }
+
+                    Widgets.RoundedButton {
+                        Layout.preferredWidth: 40 * constants.scaleFactor
+                        Layout.fillHeight: true
+
+                        color: colors.view_background
+
                         source: images.compass_icon
                         iconRotation: sceneView.currentViewpointCamera.heading
                         iconSize: 32 * constants.scaleFactor
 
                         onClicked: {
+                            resetCameraController();
+
                             rotateToNorth();
                         }
                     }
@@ -497,6 +556,22 @@ Page {
         }
     }
 
+    GlobeCameraController {
+        id: globeCameraController
+    }
+
+    Timer {
+        id: rotationTimer
+
+        interval: 100
+        repeat: false
+        running: false
+
+        onTriggered: {
+            sceneView.cameraController.moveCamera(0, 360, 0, 60);
+        }
+    }
+
     Component.onCompleted: {
         initial();
     }
@@ -610,6 +685,24 @@ Page {
         arcGISRuntimeHelper.cameraRotateAround(sceneView, _point, _deltaRotation);
     }
 
+    function applyRotation() {
+        var _center = sceneView.currentViewpointCenter.center;
+        var _camera = sceneView.currentViewpointCamera;
+
+        var orbitLocationCameraController = ArcGISRuntimeEnvironment.createObject(
+                    "OrbitLocationCameraController",
+                    {
+                        cameraHeadingOffset: _camera.heading,
+                        cameraPitchOffset: _camera.pitch,
+                        targetLocation: _center,
+                        initialCameraLocation: _camera.location
+                    })
+
+        sceneView.cameraController = orbitLocationCameraController;
+
+        rotationTimer.start();
+    }
+
     function updateSceneView() {
         if (!sceneView.currentViewpointCenter || !sceneView.currentViewpointCamera)
             return;
@@ -647,5 +740,9 @@ Page {
                            dialog.close();
                        },
                        function() {});
+    }
+
+    function resetCameraController() {
+        sceneView.cameraController = globeCameraController;
     }
 }
