@@ -478,7 +478,6 @@ Page {
             Item {
                 Layout.preferredWidth: 40 * constants.scaleFactor
                 Layout.fillHeight: true
-                visible: false
 
                 Widgets.RoundedButton {
                     width: 40 * constants.scaleFactor
@@ -499,7 +498,6 @@ Page {
             Item {
                 Layout.preferredWidth: 8 * constants.scaleFactor
                 Layout.fillHeight: true
-                visible: false
             }
 
             Item {
@@ -568,7 +566,7 @@ Page {
         running: false
 
         onTriggered: {
-            sceneView.cameraController.moveCamera(0, 360, 0, 60);
+            sceneView.cameraController.moveCamera(0, -360, 0, 120);
         }
     }
 
