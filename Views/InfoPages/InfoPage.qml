@@ -550,7 +550,12 @@ Page {
         height: parent.height
 
         onClicked: {
+            var _camera = arcGISRuntimeHelper.createCamera(viewpoint.camera);
+            console.log(JSON.stringify(viewpoint.camera.position));
+            console.log(JSON.stringify(sceneView.currentViewpointCamera.location.json))
+            arcGISRuntimeHelper.setCamera(sceneView, _camera);
 
+            close();
         }
     }
 
@@ -590,11 +595,46 @@ Page {
                     });
 
         _scene.onLoadStatusChanged.connect(function() {
-            if (_scene.loadStatus === 0)
+            if (_scene.loadStatus === 0) {
                 initialViewpointCamera = sceneView.scene.initialViewpoint.camera;
+
+                getBookMarks();
+            }
         });
 
         sceneView.scene = _scene;
+    }
+
+    function getBookMarks() {
+        var _unsupportedJson = sceneView.scene.unsupportedJson;
+
+        var _presentation = {};
+
+        if (_unsupportedJson.hasOwnProperty("presentation")) {
+            _presentation = _unsupportedJson.presentation;
+
+            if (_presentation.hasOwnProperty("slides")) {
+                var _slides = _presentation.slides;
+
+                _slides.forEach(function(slide) {
+                    var _itemTitle = {};
+                    var _itemViewpoint = {};
+
+                    if (slide.hasOwnProperty("title"))
+                        _itemTitle = slide.title;
+
+                    if (slide.hasOwnProperty("viewpoint"))
+                        _itemViewpoint = slide.viewpoint;
+
+                    var _obj = {
+                        itemTitle: _itemTitle,
+                        itemViewpoint: _itemViewpoint
+                    }
+
+                    bookMarkSlideMenu.listView.model.append(_obj);
+                })
+            }
+        }
     }
 
     function openShareSheet() {
@@ -602,7 +642,7 @@ Page {
     }
 
     function getShortenedUrl(url, process) {
-        var promise = new Promise(function(resolve, reject) {
+        var _promise = new Promise(function(resolve, reject) {
             networkManager.requestShortenedUrl(url, function(response) {
                 try {
                     if (!infoPage)
@@ -622,7 +662,7 @@ Page {
             })
         })
 
-        promise.then(function() {
+        _promise.then(function() {
             process();
         }).catch(function(e) {
             console.error(e);

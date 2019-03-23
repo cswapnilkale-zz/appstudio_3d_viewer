@@ -24,7 +24,7 @@ Drawer {
 
     property alias listView: listView
 
-    signal clicked(var bookmarkViewpoint)
+    signal clicked(var viewpoint)
 
     onOpened: {
         this.forceActiveFocus();
@@ -124,7 +124,7 @@ Drawer {
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
 
-                                text: bookmarkName
+                                text: itemTitle.text
                                 clip: true
                                 elide: Text.ElideRight
 
@@ -143,7 +143,7 @@ Drawer {
                         }
 
                         onClicked: {
-                            root.clicked(bookmarkViewpoint);
+                            root.clicked(itemViewpoint);
                         }
                     }
                 }
@@ -163,6 +163,8 @@ Drawer {
                     verticalAlignment: Label.AlignVCenter
                     leftPadding: 16 * constants.scaleFactor
                     rightPadding: 16 * constants.scaleFactor
+
+                    visible: listView.model.count === 0
                 }
             }
         }

@@ -76,4 +76,32 @@ Item {
             return _value < 10000000 ? _value.toFixed(2) : _value.toExponential(3);
         }
     }
+
+    function createCamera(camera) {
+        var _position = camera.position;
+
+        var _spatialReference = ArcGISRuntimeEnvironment.createObject(
+                    "SpatialReference", {
+                        wkid: _position.spatialReference.wkid
+                    })
+
+        var _location = ArcGISRuntimeEnvironment.createObject(
+                    "Point", {
+                        x: _position.x,
+                        y: _position.y,
+                        z: _position.z,
+                        SpatialReference: _spatialReference
+                    })
+
+        var _heading = camera.heading;
+        var _pitch = camera.tilt;
+
+        return ArcGISRuntimeEnvironment.createObject(
+                    "Camera", {
+                        heading: _heading,
+                        pitch: _pitch,
+                        roll: 0,
+                        location: _location
+                    })
+    }
 }

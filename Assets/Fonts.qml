@@ -44,14 +44,14 @@ Item {
     }
 
     function loadFonts() {
-        var fileNames = fontsFolder.fileNames();
+        var _fileNames = fontsFolder.fileNames();
 
-        for (var i in fileNames) {
-            var fileName = fileNames[i];
+        for (var i in _fileNames) {
+            var _fileName = _fileNames[i];
             var loader = fontLoader.createObject
                     (root,
                      {
-                         fileName: fileName
+                         fileName: _fileName
                      });
         }
     }
