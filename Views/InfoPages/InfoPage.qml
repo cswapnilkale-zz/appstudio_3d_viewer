@@ -550,9 +550,9 @@ Page {
         height: parent.height
 
         onClicked: {
-            var _camera = arcGISRuntimeHelper.createCamera(viewpoint.camera);
-            console.log(JSON.stringify(viewpoint.camera.position));
-            console.log(JSON.stringify(sceneView.currentViewpointCamera.location.json))
+            resetCameraController();
+
+            var _camera = arcGISRuntimeHelper.createCamera(viewpoint.camera, sceneView.spatialReference.wkid);
             arcGISRuntimeHelper.setCamera(sceneView, _camera);
 
             close();

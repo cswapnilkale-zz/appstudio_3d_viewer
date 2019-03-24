@@ -77,21 +77,25 @@ Item {
         }
     }
 
-    function createCamera(camera) {
-        var _position = camera.position;
+    function createCamera(camera, wkid) {
+        var _cameraPosition = camera.position;
 
-        var _spatialReference = ArcGISRuntimeEnvironment.createObject(
-                    "SpatialReference", {
-                        wkid: _position.spatialReference.wkid
-                    })
-
-        var _location = ArcGISRuntimeEnvironment.createObject(
+        var _point = ArcGISRuntimeEnvironment.createObject(
                     "Point", {
-                        x: _position.x,
-                        y: _position.y,
-                        z: _position.z,
-                        SpatialReference: _spatialReference
+                        x: _cameraPosition.x,
+                        y: _cameraPosition.y,
+                        z: _cameraPosition.z,
+                        spatialReference: ArcGISRuntimeEnvironment.createObject(
+                                              "SpatialReference", {
+                                                  wkid: _cameraPosition.spatialReference.wkid
+                                              })
                     })
+
+        var _location = GeometryEngine.project(
+                    _point, ArcGISRuntimeEnvironment.createObject(
+                        "SpatialReference", {
+                            wkid: wkid
+                        }));
 
         var _heading = camera.heading;
         var _pitch = camera.tilt;
