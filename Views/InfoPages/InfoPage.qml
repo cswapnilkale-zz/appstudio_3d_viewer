@@ -627,6 +627,7 @@ Page {
                 _slides.forEach(function(slide) {
                     var _itemTitle = {};
                     var _itemViewpoint = {};
+                    var _itemThumbnail = {};
 
                     if (slide.hasOwnProperty("title"))
                         _itemTitle = slide.title;
@@ -634,12 +635,16 @@ Page {
                     if (slide.hasOwnProperty("viewpoint"))
                         _itemViewpoint = slide.viewpoint;
 
+                    if (slide.hasOwnProperty("thumbnail"))
+                        _itemThumbnail = slide.thumbnail;
+
                     var _obj = {
                         itemTitle: _itemTitle,
+                        itemThumbnail: _itemThumbnail,
                         itemViewpoint: _itemViewpoint
                     }
 
-                    bookMarkSlideMenu.listView.model.append(_obj);
+                    bookMarkSlideMenu.gridView.model.append(_obj);
                 })
             }
         }

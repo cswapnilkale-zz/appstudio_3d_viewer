@@ -1,3 +1,3 @@
-function _arrayBufferToBase64() {
+function decodeBase64() {
 
 }

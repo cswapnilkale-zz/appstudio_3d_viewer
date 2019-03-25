@@ -15,6 +15,8 @@ Item {
     property bool ismacOS: false
     property bool isAutoSignIn: false
     property bool isRTL: false
+    property bool isCompactCanvas: app.width <= 496 * constants.scaleFactor
+    property bool isRegularCanvas: app.width > 496 * constants.scaleFactor && app.width <= 800 * constants.scaleFactor
 
     function initialize() {
         // check device

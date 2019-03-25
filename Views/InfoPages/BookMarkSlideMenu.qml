@@ -22,7 +22,7 @@ Drawer {
         color: colors.view_background
     }
 
-    property alias listView: listView
+    property alias gridView: gridView
 
     signal clicked(var viewpoint)
 
@@ -86,65 +86,142 @@ Drawer {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                ListView {
-                    id: listView
-
+                RowLayout {
                     anchors.fill: parent
-
-                    model: ListModel {}
-
                     spacing: 0
 
-                    visible: this.model.count > 0
+                    Item {
+                        Layout.preferredWidth: 4 * constants.scaleFactor
+                        Layout.fillHeight: true
+                    }
 
-                    delegate: Widgets.TouchGestureArea {
-                        id: delegate
+                    Item {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
 
-                        width: parent.width
-                        height: 56 * constants.scaleFactor
-                        color: colors.black
+                        GridView {
+                            id: gridView
 
-                        RowLayout {
                             anchors.fill: parent
-                            spacing: 0
 
-                            Item {
-                                Layout.preferredWidth: 56 * constants.scaleFactor
-                                Layout.fillHeight: true
+                            model: ListModel {}
 
-                                Widgets.IconImage {
-                                    width: 24 * constants.scaleFactor
-                                    height: this.width
-                                    anchors.centerIn: parent
-                                    source: images.book_mark_icon
+                            cellWidth: delegateWidth
+                            cellHeight: delegateHeight
+
+                            flow: GridView.FlowLeftToRight
+                            boundsBehavior: Flickable.StopAtBounds
+                            clip: true
+
+                            visible: this.model.count > 0
+
+                            property int columnNumber: appManager.isCompactCanvas ? 1 : (appManager.isRegularCanvas ? 2 : 3)
+
+                            property real delegateWidth: this.width / columnNumber
+                            property real delegateHeight: delegateWidth / 3
+
+                            header: Item {
+                                width: parent.width
+                                height: 4 * constants.scaleFactor
+                            }
+
+                            footer: Item {
+                                width: parent.width
+                                height: 4 * constants.scaleFactor
+                            }
+
+                            delegate: Item {
+                                id: delegate
+
+                                width: gridView.cellWidth
+                                height: gridView.cellHeight
+
+                                Widgets.TouchGestureArea {
+                                    anchors.fill: parent
+                                    anchors.margins: 4 * constants.scaleFactor
+                                    color: colors.black
+
+                                    onClicked: {
+                                        root.clicked(itemViewpoint);
+                                    }
+
+                                    ColumnLayout {
+                                        anchors.fill: parent
+                                        spacing: 0
+
+                                        Item {
+                                            Layout.fillWidth: true
+                                            Layout.preferredHeight: 8 * constants.scaleFactor
+                                        }
+
+                                        Item {
+                                            Layout.fillWidth: true
+                                            Layout.fillHeight: true
+                                            clip: true
+
+                                            RowLayout {
+                                                anchors.fill: parent
+                                                spacing: 0
+
+                                                Item {
+                                                    Layout.preferredWidth: 8 * constants.scaleFactor
+                                                    Layout.fillHeight: true
+                                                }
+
+                                                Item {
+                                                    Layout.preferredWidth: this.height / 62 * 114
+                                                    Layout.fillHeight: true
+
+                                                    Image {
+                                                        anchors.fill: parent
+
+                                                        source: itemThumbnail.url
+
+                                                        fillMode: Image.PreserveAspectFit
+                                                    }
+                                                }
+
+                                                Label {
+                                                    Layout.fillWidth: true
+                                                    Layout.fillHeight: true
+
+                                                    text: itemTitle.text
+                                                    wrapMode: Label.Wrap
+                                                    maximumLineCount: 2
+                                                    clip: true
+                                                    elide: Text.ElideRight
+
+                                                    font.family: fonts.avenirNextDemi
+                                                    font.pixelSize: 12 * constants.scaleFactor
+                                                    color: colors.white
+
+                                                    horizontalAlignment: Label.AlignHCenter
+                                                    verticalAlignment: Label.AlignVCenter
+
+                                                    leftPadding: 8 * constants.scaleFactor
+                                                    rightPadding: this.leftPadding
+                                                }
+
+                                                Item {
+                                                    Layout.preferredWidth: 8 * constants.scaleFactor
+                                                    Layout.fillHeight: true
+                                                }
+                                            }
+                                        }
+
+                                        Item {
+                                            Layout.fillWidth: true
+                                            Layout.preferredHeight: 8 * constants.scaleFactor
+                                        }
+                                    }
                                 }
                             }
-
-                            Label {
-                                Layout.fillWidth: true
-                                Layout.fillHeight: true
-
-                                text: itemTitle.text
-                                clip: true
-                                elide: Text.ElideRight
-
-                                font.family: fonts.avenirNextDemi
-                                font.pixelSize: 16 * constants.scaleFactor
-                                color: colors.white
-
-                                horizontalAlignment: Label.AlignLeft
-                                verticalAlignment: Label.AlignVCenter
-                            }
-
-                            Item {
-                                Layout.preferredWidth: 16 * constants.scaleFactor
-                                Layout.fillHeight: true
-                            }
                         }
+                    }
 
-                        onClicked: {
-                            root.clicked(itemViewpoint);
-                        }
+                    Item {
+                        Layout.preferredWidth: 4 * constants.scaleFactor
+                        Layout.fillHeight: true
                     }
                 }
 
@@ -164,7 +241,7 @@ Drawer {
                     leftPadding: 16 * constants.scaleFactor
                     rightPadding: 16 * constants.scaleFactor
 
-                    visible: listView.model.count === 0
+                    visible: gridView.model.count === 0
                 }
             }
         }
