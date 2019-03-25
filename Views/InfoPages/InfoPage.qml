@@ -10,6 +10,8 @@ import Esri.ArcGISRuntime 100.5
 
 import "../../Widgets" as Widgets
 
+import "../../JS/ImageConverter.js" as ImageConverter
+
 Page {
     id: infoPage
 
@@ -17,7 +19,7 @@ Page {
 
     property string sceneUrl: ""
     property string sceneTitle: ""
-    property string viewMode: sceneView.currentViewpointCamera.pitch < 0.1 ? "3D" : "2D"
+    property string viewMode: ""
     property string sceneInfoText: ""
     property string coordinatesText: ""
     property string shortUrl: ""
@@ -68,6 +70,10 @@ Page {
 
             onMousePressed: {
                 resetCameraController();
+            }
+
+            Component.onCompleted: {
+                viewMode = Qt.binding(function() { return sceneView.currentViewpointCamera.pitch < 0.1 ? "3D" : "2D"; })
             }
         }
 
@@ -204,6 +210,8 @@ Page {
                         Layout.fillHeight: true
                         color: colors.view_background
                         radius: this.width / 2
+
+                        isEnabled: viewMode > ""
 
                         Label {
                             id: icon
