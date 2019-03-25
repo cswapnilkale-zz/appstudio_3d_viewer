@@ -139,6 +139,7 @@ Drawer {
                                 Widgets.TouchGestureArea {
                                     anchors.fill: parent
                                     anchors.margins: 4 * constants.scaleFactor
+
                                     color: colors.black
 
                                     onClicked: {
