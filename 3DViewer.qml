@@ -48,7 +48,7 @@ App {
     Controls.NetworkManager {
         id: networkManager
 
-        rootUrl: constants.orgUrl + "/sharing/rest"
+        rootUrl: appManager.schema.portalUrl + "/sharing/rest"
     }
 
     Controls.ArcGISRuntimeHelper {

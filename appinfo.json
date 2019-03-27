@@ -81,6 +81,11 @@
     "multipleInstances": true,
     "projectFile": "3DViewer.qmlproject",
     "properties": {
+        "startButtonText": "GET STARTED",
+        "startButtonColor": "#007AC2",
+        "galleryWebSceneQuery": "type: web scene",
+        "portalUrl": "https://www.arcgis.com",
+        "startBackground": ""
     },
     "resources": {
         "appIcon": "",

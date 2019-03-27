@@ -5,8 +5,6 @@ import ArcGIS.AppFramework 1.0
 Item {
     id: root
 
-    readonly property string orgUrl: "https://melbournedev.maps.arcgis.com"
-
     readonly property string q_filter: "-type:\"Code Attachment\" -type:\"Featured Items\" -type:\"Symbol Set\" -type:\"Color Set\" -type:\"Windows Viewer Add In\" -type:\"Windows Viewer Configuration\" -type:\"Map Area\" -typekeywords:\"MapAreaPackage\""
 
     // Screen scale factor

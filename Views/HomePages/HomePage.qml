@@ -122,7 +122,7 @@ Page {
                                     null,
                                     {
                                         sceneTitle: itemTitle,
-                                        sceneUrl: constants.orgUrl + "/home/item.html?id=" + itemId
+                                        sceneUrl: appManager.schema.portalUrl + "/home/item.html?id=" + itemId
                                     });
                         infoPage.onClosed.connect(function() {
                             locationManager.stop();
@@ -166,7 +166,7 @@ Page {
     }
 
     function populateList() {
-        var _q = "type:web scene " + constants.q_filter;
+        var _q = "%1 %2".arg(appManager.schema.galleryWebSceneQuery).arg(constants.q_filter);
         var _num = constants.loadingNumber;
         var _sortField = "";
         var _sortOrder = "desc";

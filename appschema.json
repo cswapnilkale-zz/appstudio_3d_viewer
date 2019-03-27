@@ -6,17 +6,16 @@
                 "title": "Start Screen",
                 "propertyInfos": [
                     {
-                        "type": "image",
-                        "label": "Background image",
-                        "hint": "Image to use for the start page background.",
-                        "name": "startBackground",
-                        "folder": "assets"
+                        "type": "string",
+                        "label": "Start button string",
+                        "hint": "Text to use for the start button.",
+                        "name": "startButtonText"
                     },
                     {
                         "type": "color",
-                        "label": "Brand color",
-                        "hint": "Color to use as the primary color.",
-                        "name": "brandColor"
+                        "label": "Start button color",
+                        "hint": "Color to use for the start button.",
+                        "name": "startButtonColor"
                     },
                     {
                         "type": "number",

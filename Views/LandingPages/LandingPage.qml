@@ -74,7 +74,7 @@ Page {
                 height: parent.height
 
                 radius: 4 * constants.scaleFactor
-                color: colors.blue
+                color: appManager.schema.startButtonColor
 
                 anchors.centerIn: parent
 
@@ -82,7 +82,7 @@ Page {
 
                 textSize: 14 * constants.scaleFactor
 
-                buttonText: strings.start_button
+                buttonText: appManager.schema.startButtonText
 
                 onClicked: {
                     var _homePage = components.homePageComponent.createObject(null);

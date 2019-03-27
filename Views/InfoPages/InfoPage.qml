@@ -10,8 +10,6 @@ import Esri.ArcGISRuntime 100.5
 
 import "../../Widgets" as Widgets
 
-import "../../JS/ImageConverter.js" as ImageConverter
-
 Page {
     id: infoPage
 
