@@ -16,4 +16,5 @@ Item {
     readonly property string error: qsTr("Error")
     readonly property string dialog_invalid_url_description: qsTr("Unable to connect Portal right now. Please check the url or try again later.")
     readonly property string empty_state_no_result: qsTr("No result found.")
+    readonly property string dialog_not_web_scene_item_description: qsTr("This item is not a web scene.")
 }

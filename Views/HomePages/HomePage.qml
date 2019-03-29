@@ -118,18 +118,31 @@ Page {
                     color: colors.black
 
                     onClicked: {
-                        var infoPage = infoPageComponent.createObject(
-                                    null,
-                                    {
-                                        sceneTitle: itemTitle,
-                                        sceneUrl: appManager.schema.portalUrl + "/home/item.html?id=" + itemId
-                                    });
-                        infoPage.onClosed.connect(function() {
-                            locationManager.stop();
+                        if (itemType !== "Web Scene") {
+                            dialog.display(strings.error,
+                                           strings.dialog_not_web_scene_item_description,
+                                           strings.okay,
+                                           "",
+                                           colors.white,
+                                           colors.white,
+                                           function() {
+                                               dialog.close();
+                                           },
+                                           function() {});
+                        } else {
+                            var infoPage = infoPageComponent.createObject(
+                                        null,
+                                        {
+                                            sceneTitle: itemTitle,
+                                            sceneUrl: appManager.schema.portalUrl + "/home/item.html?id=" + itemId
+                                        });
+                            infoPage.onClosed.connect(function() {
+                                locationManager.stop();
 
-                            stackView.pop();
-                        })
-                        stackView.push(infoPage);
+                                stackView.pop();
+                            })
+                            stackView.push(infoPage);
+                        }
                     }
                 }
 
@@ -214,6 +227,7 @@ Page {
                         var _itemOwner = "";
                         var _itemTitle = "";
                         var _itemThumbnail = "";
+                        var _itemType = "";
 
                         if (_temp.hasOwnProperty("id"))
                             _itemId = _temp.id;
@@ -227,11 +241,15 @@ Page {
                         if (_temp.hasOwnProperty("thumbnail"))
                             _itemThumbnail = networkManager.rootUrl + "/content/items/" + _itemId + "/info/" + _temp.thumbnail;
 
+                        if (_temp.hasOwnProperty("type"))
+                            _itemType = _temp.type;
+
                         var _obj = {
                             itemId: _itemId,
                             itemOwner: _itemOwner,
                             itemTitle: _itemTitle,
-                            itemThumbnail: _itemThumbnail
+                            itemThumbnail: _itemThumbnail,
+                            itemType: _itemType
                         }
 
                         listView.model.append(_obj);
