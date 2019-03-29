@@ -38,18 +38,18 @@ Item {
     }
 
     function makeNetworkConnection(url, obj, callback, params) {
-        var component = networkRequestComponent;
-        var networkRequest = component.createObject(parent);
-        networkRequest.url = url;
-        networkRequest.callback = callback;
-        networkRequest.params = params;
-        networkRequest.send(obj);
+        var _component = networkRequestComponent;
+        var _networkRequest = _component.createObject(parent);
+        _networkRequest.url = url;
+        _networkRequest.callback = callback;
+        _networkRequest.params = params;
+        _networkRequest.send(obj);
     }
 
     function requestWebScenes(q, num, start, sortField, sortOrder, callback) {
-        var url = rootUrl + "/search";
+        var _url = rootUrl + "/search";
 
-        var obj = {
+        var _obj = {
             q: q,
             num: num,
             start: start,
@@ -59,28 +59,38 @@ Item {
         };
 
         if (token > "")
-            obj.token = token;
+            _obj.token = token;
 
-        makeNetworkConnection(url, obj, callback);
+        makeNetworkConnection(_url, _obj, callback);
+    }
+
+    function getPortalInfo(callback) {
+        var _url = rootUrl + "/portals/self";
+
+        var _obj = {
+            f: "json"
+        }
+
+        makeNetworkConnection(_url, _obj, callback);
     }
 
     function requestShortenedUrl(longUrl, callback) {
-        var url = "https://arcg.is/prod/shorten?longUrl=" + longUrl;
+        var _url = "https://arcg.is/prod/shorten?longUrl=" + longUrl;
 
-        makeXHRRequest(url, "GET", callback);
+        makeXHRRequest(_url, "GET", callback);
     }
 
     function makeXHRRequest(networkRequestUrl, networkRequestMethod, callback) {
-        var xhr = new XMLHttpRequest();
-        var method = networkRequestMethod;
-        var url = networkRequestUrl;
+        var _xhr = new XMLHttpRequest();
+        var _method = networkRequestMethod;
+        var _url = networkRequestUrl;
 
-        xhr.open(method, url, true);
-        xhr.send();
+        _xhr.open(_method, _url, true);
+        _xhr.send();
 
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === xhr.DONE && xhr.status === 200)
-                callback(xhr);
+        _xhr.onreadystatechange = function() {
+            if (_xhr.readyState === _xhr.DONE && _xhr.status === 200)
+                callback(_xhr);
         };
     }
 }

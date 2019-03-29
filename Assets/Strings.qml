@@ -12,5 +12,7 @@ Item {
     readonly property string dialog_no_location_permission_description: qsTr("Please enable Location access permission for 3D Viewer in the device Settings.")
     readonly property string okay: qsTr("OKAY")
     readonly property string app_settings: qsTr("App Settings")
-    readonly property string clipboard_copy: qsTr('Copied to the clipboard.')
+    readonly property string clipboard_copy: qsTr("Copied to the clipboard.")
+    readonly property string error: qsTr("Error")
+    readonly property string dialog_invalid_url_description: qsTr("Unable to connect Portal right now. Please check the url or try again later.")
 }

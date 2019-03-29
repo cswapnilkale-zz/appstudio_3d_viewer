@@ -57,6 +57,18 @@ Item {
         schema.startButtonText = app.info.propertyValue("startButtonText", schema.defaultStartButtonText);
         schema.galleryWebSceneQuery = app.info.propertyValue("galleryWebSceneQuery", schema.defaultGalleryWebSceneQuery);
         schema.startButtonColor = app.info.propertyValue("startButtonColor", schema.defaultStartButtonColor);
-        schema.portalUrl = app.info.propertyValue("portalUrl", schema.defaultPortalUrl);
+        schema.portalUrl = updateRealPortalUrl(app.info.propertyValue("portalUrl", schema.defaultPortalUrl));
+    }
+
+    function updateRealPortalUrl(url) {
+        url = url.toLowerCase();
+
+        if (url.indexOf("https://") === -1)
+            if (url.indexOf("http://") === -1)
+                url = url.replace("http://", "https://");
+            else
+                url = "https://" + url;
+
+        return url;
     }
 }

@@ -16,6 +16,8 @@ Page {
 
     Material.background: colors.black
 
+    property bool isPageLoading: false
+
     ColumnLayout {
         anchors.fill: parent
         spacing: 0
@@ -84,15 +86,16 @@ Page {
 
                 buttonText: appManager.schema.startButtonText
 
+                visible: !isPageLoading
+
                 onClicked: {
-                    var _homePage = components.homePageComponent.createObject(null);
-
-                    _homePage.onBack.connect(function() {
-                        stackView.pop();
-                    });
-
-                    stackView.push(_homePage);
+                    validatePortalUrl();
                 }
+            }
+
+            Widgets.ProgressIndicator {
+                anchors.fill: parent
+                visible: isPageLoading
             }
         }
 
@@ -105,5 +108,49 @@ Page {
             Layout.fillWidth: true
             Layout.preferredHeight: appManager.isiPhoneX ? 28 * constants.scaleFactor : 0
         }
+    }
+
+    function validatePortalUrl() {
+        isPageLoading = true;
+
+        networkManager.getPortalInfo(function(response) {
+            try {
+                if (!landingPage)
+                    return;
+
+                var _isPortalValid = false;
+
+                if (response.hasOwnProperty("portalName"))
+                    _isPortalValid = true;
+
+                if (_isPortalValid)
+                    navigateHomePage();
+                else
+                    dialog.display(strings.error,
+                                   strings.dialog_invalid_url_description,
+                                   strings.okay,
+                                   "",
+                                   colors.white,
+                                   colors.white,
+                                   function() {
+                                       dialog.close();
+                                   },
+                                   function() {});
+
+                isPageLoading = false;
+            } catch (e) {
+                console.error("Error on LandingPage validatePortalUrl: " + e);
+            }
+        })
+    }
+
+    function navigateHomePage() {
+        var _homePage = components.homePageComponent.createObject(null);
+
+        _homePage.onBack.connect(function() {
+            stackView.pop();
+        });
+
+        stackView.push(_homePage);
     }
 }
