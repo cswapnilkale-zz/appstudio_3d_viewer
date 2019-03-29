@@ -147,6 +147,25 @@ Page {
                     }
                 }
             }
+
+            Label {
+                anchors.fill: parent
+
+                text: strings.empty_state_no_result
+                clip: true
+                elide: Text.ElideRight
+
+                font.family: fonts.avenirNextDemi
+                font.pixelSize: 16 * constants.scaleFactor
+                color: colors.white
+
+                horizontalAlignment: Label.AlignHCenter
+                verticalAlignment: Label.AlignVCenter
+                leftPadding: 16 * constants.scaleFactor
+                rightPadding: 16 * constants.scaleFactor
+
+                visible: listView.count === 0 && !isPageLoading
+            }
         }
     }
 

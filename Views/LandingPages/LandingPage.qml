@@ -123,9 +123,9 @@ Page {
                 if (response.hasOwnProperty("portalName"))
                     _isPortalValid = true;
 
-                if (_isPortalValid)
+                if (_isPortalValid) {
                     navigateHomePage();
-                else
+                } else {
                     dialog.display(strings.error,
                                    strings.dialog_invalid_url_description,
                                    strings.okay,
@@ -137,7 +137,8 @@ Page {
                                    },
                                    function() {});
 
-                isPageLoading = false;
+                    isPageLoading = false;
+                }
             } catch (e) {
                 console.error("Error on LandingPage validatePortalUrl: " + e);
             }

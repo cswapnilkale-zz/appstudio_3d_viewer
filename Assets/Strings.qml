@@ -15,4 +15,5 @@ Item {
     readonly property string clipboard_copy: qsTr("Copied to the clipboard.")
     readonly property string error: qsTr("Error")
     readonly property string dialog_invalid_url_description: qsTr("Unable to connect Portal right now. Please check the url or try again later.")
+    readonly property string empty_state_no_result: qsTr("No result found.")
 }
